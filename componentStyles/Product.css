@@ -118,12 +118,15 @@
 .original-price {
   text-decoration: line-through;
   color: #999;
-  margin-right: 0.5rem;
+  font-size: 18px;
+  margin-right: 1rem;
 }
 
 .offered-price {
   font-weight: bold;
-  color: var(--primary-main);
+  color: red;
+  font-size: 18px;
+  
 }
 
 .add-to-cart {
