@@ -4,7 +4,7 @@
   margin-bottom: .5rem;
   padding: 3rem 1rem;
   display: grid;
-  
+  margin-top: 85px;
   grid-template-columns: 1fr 350px;
   gap: 2rem;
 }

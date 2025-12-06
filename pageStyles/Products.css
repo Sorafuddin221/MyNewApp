@@ -41,7 +41,7 @@
 }
 
 .filter-section li.active {
-  background-color: var(--primary-light);
+  background-color: var(--primary-dark);
   color: white;
   font-weight: bold;
 }
