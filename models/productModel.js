@@ -81,6 +81,11 @@ image:[
         createdAt:{
             type:Date,
             default:Date.now
+        },
+        // NEW FIELD FOR TRENDING PRODUCTS
+        viewsCount: {
+            type: Number,
+            default: 0,
         }
 })
 

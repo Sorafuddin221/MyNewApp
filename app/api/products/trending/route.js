@@ -6,13 +6,9 @@ import HandleError from '@/utils/handleError';
 export async function GET() {
     await connectMongoDatabase();
     try {
-        // --- START Modification for Trending Products ---
-        // TODO: Define what 'trending' means for your application and modify this query.
-        // For example, you might have a field like 'isTrending: true' in your product model,
-        // or you might sort by 'views', 'salesCount', 'createdAt' (for new arrivals) etc.
-        // For demonstration, we're fetching products marked as isTrending and limiting to 8.
-        const products = await Product.find({ isTrending: true }).limit(8); // Fetches trending products and limits to 8
-        // --- END Modification for Trending Products ---
+        // Fetch products by viewsCount in descending order to get the most viewed products
+        // Limit to 8 products as per the previous design.
+        const products = await Product.find({}).sort({ viewsCount: -1 }).limit(8); 
 
         if (!products || products.length === 0) {
             return NextResponse.json({ success: true, products: [] }, { status: 200 });

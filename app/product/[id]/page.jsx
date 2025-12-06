@@ -34,6 +34,12 @@ export default async function ProductDetailsPage({ params }) {
     // Fetch product directly using Mongoose
     const fetchedProduct = await ProductModel.findById(id).populate('category');
     product = fetchedProduct ? JSON.parse(JSON.stringify(fetchedProduct)) : null;
+
+    // Increment viewsCount
+    if (fetchedProduct) {
+        await ProductModel.findByIdAndUpdate(id, { $inc: { viewsCount: 1 } });
+    }
+
   } catch (error) {
     console.error("Error fetching product in Server Component:", error);
     // You might want to handle this error more gracefully, e.g., show a 404 or error page
