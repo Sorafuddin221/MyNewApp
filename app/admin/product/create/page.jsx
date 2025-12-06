@@ -203,7 +203,7 @@ function CreateProductPage() {
 
 
                     <Editor
-                        apiKey="YOUR_TINYMCE_API_KEY" // Replace with your actual TinyMCE API key
+                        apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY} // Replace with your actual TinyMCE API key
                         init={{
                             height: 300,
                             menubar: false,
