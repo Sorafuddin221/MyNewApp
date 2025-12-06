@@ -13,6 +13,8 @@ import { removeMessage, addItemsToCart } from '@/features/cart/cartSlice';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
+import RelatedProducts from './RelatedProducts'; // New import
+
 function ProductDetailsClientComponent({ initialProduct, productId }) {
     const { id } = initialProduct ? initialProduct : { id: productId }; // Use initialProduct if available, otherwise productId
     const [userRating, setUserRating] = useState(0);
@@ -231,6 +233,14 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
                     )}
                 </div>
             </div>
+
+            {/* Add RelatedProducts component here */}
+            {product && product.category && (
+                <RelatedProducts
+                    productId={product._id}
+                    productCategory={product.category._id}
+                />
+            )}
         </>
     );
 }
