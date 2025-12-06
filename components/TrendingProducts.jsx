@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Product from './Product';
 import Loader from './Loader';
 import axios from 'axios';
-import '../../componentStyles/TrendingProducts.css';
+import '../componentStyles/TrendingProducts.css';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
