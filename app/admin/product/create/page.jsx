@@ -8,6 +8,12 @@ import { createProduct, removeErrors, removeSuccess } from '@/features/admin/adm
 import { createCategory, deleteCategory, getAllCategories, updateCategory } from '@/features/category/categorySlice';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
+
+const Editor = dynamic(
+    () => import('@tinymce/tinymce-react').then((mod) => mod.Editor),
+    { ssr: false }
+);
 function CreateProductPage() {
     const { success, loading, error } = useSelector(state => state.admin);
     const { categories, loading: categoryLoading, error: categoryError } = useSelector(state => state.category);
@@ -193,10 +199,9 @@ function CreateProductPage() {
                     <input value={name} onChange={(e) => setName(e.target.value)} name='name' type="text" className="form-input" placeholder='Enter Product Name' required />
                     <input value={price} onChange={(e) => setPrice(e.target.value)} name='Price' type="number" className="form-input" placeholder='Enter Product Price' required />
                     <input value={offeredPrice} onChange={(e) => setOfferedPrice(e.target.value)} name='offeredPrice' type="number" className="form-input" placeholder='Enter Offered Price' />
-import { Editor } from '@tinymce/tinymce-react';
-// ... rest of the component
 
-// Inside the form, replace the textarea with:
+
+
                     <Editor
                         apiKey="YOUR_TINYMCE_API_KEY" // Replace with your actual TinyMCE API key
                         init={{
