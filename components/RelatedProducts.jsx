@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Product from './Product';
 import Loader from './Loader';
-import '../../componentStyles/RelatedProducts.css'; // Assuming a new CSS file for this component
+import '../componentStyles/RelatedProducts.css';
 
 const RelatedProducts = ({ productId, productCategory }) => {
     const [relatedProducts, setRelatedProducts] = useState([]);
