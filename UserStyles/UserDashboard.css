@@ -42,7 +42,7 @@
 .menu-option-btn {
     width: 100%;
     padding: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border: none;
     border-radius: 8px;
     background-color: var(--primary-main);
@@ -117,7 +117,13 @@
         
     }
     .menu-options {
-        top: 80px; 
+        
         right: -10px;
     }
+  }
+  @media (max-width: 390px) {
+  .profile-header {
+    top: 5px;
+    right: -70px;
+  }
   }

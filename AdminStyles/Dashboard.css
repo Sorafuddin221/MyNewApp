@@ -179,10 +179,15 @@
   }
   
   @media (max-width: 768px) {
+    .dashboard-container {
+      display: block;
+    }
+    
     .sidebar {
       width: 100%;
       height: auto;
       position: relative;
+      top: 0;
     }
   
     .main-content {

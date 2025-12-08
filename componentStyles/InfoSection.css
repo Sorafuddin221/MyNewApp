@@ -40,3 +40,20 @@
 .info-column a {
   text-decoration: none;
 }
+
+@media (max-width: 768px) {
+  .info-section {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .info-column {
+    flex-basis: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-card {
+    padding: 1rem;
+  }
+}
+

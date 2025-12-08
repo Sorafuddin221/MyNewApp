@@ -55,6 +55,7 @@ function OrderDetailsPage({ params }) {
             {loading ? (<Loader />) : (<div className="order-box">
                 <div className="table-block">
                     <h2 className="table-title">Order Items</h2>
+                    <div className="table-responsive">
                     <table className='table-main'>
                         <thead>
                             <tr>
@@ -77,9 +78,11 @@ function OrderDetailsPage({ params }) {
                             ))}
                         </tbody>
                     </table>
+                    </div>
                 </div>
                 <div className="table-block">
                     <h2 className="table-title">Shipping Info</h2>
+                    <div className="table-responsive">
                     <table className="table-main">
                         <tbody>
                             <tr className="table-row">
@@ -92,9 +95,11 @@ function OrderDetailsPage({ params }) {
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
                 <div className="table-block">
                     <h2 className="table-title">Order Summary</h2>
+                    <div className="table-responsive">
                     <table className="table-main">
                         <tbody>
                             <tr className="table-row">
@@ -145,6 +150,7 @@ function OrderDetailsPage({ params }) {
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>)}
         </>

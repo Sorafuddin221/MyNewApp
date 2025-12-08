@@ -51,6 +51,7 @@
   @media (max-width: 768px) {
     .image-slider-container {
       height: 300px; 
+      margin-top: 4rem;
     }
   
     .slider-item img {
@@ -58,7 +59,11 @@
       height: 300px; 
     }
   }
+
   @media (max-width: 568px) {
+    .image-slider-container {
+      height: 250px; 
+    }
   
     .slider-item img {
       height: 250px; 

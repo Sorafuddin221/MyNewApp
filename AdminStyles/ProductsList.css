@@ -87,3 +87,7 @@
     color: #555;
   }
   
+  .table-responsive {
+    overflow-x: auto;
+  }
+  

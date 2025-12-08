@@ -57,6 +57,7 @@ function ProductsListPage() {
                     <PageTitle title="All Products" />
                     <div className="product-list-container">
                         <h1 className="product-list-title">All Products</h1>
+                        <div className="table-responsive">
                         <table className="product-table">
                             <thead>
                                 <tr>
@@ -93,6 +94,7 @@ function ProductsListPage() {
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </>
             )}

@@ -56,6 +56,7 @@
   .navbar-links {
     flex: 1;
     margin-left: 2rem;
+    transition: all 0.3s ease;
   }
   
   .navbar-links ul {
@@ -153,10 +154,16 @@
   }
   
   @media (max-width: 768px) {
+    .top-header {
+      flex-direction: flex;
+      align-items: flex;
+      padding: 0.5rem 1rem;
+    }
+
     .navbar-links {
       display: none;
       position: absolute;
-      top: 4rem;
+      top: 100%;
       left: 0;
       right: 0;
       background-color: var(--bg-primary);
@@ -167,7 +174,6 @@
   
     .navbar-links.active {
       display: block;
-      margin-top: 37px
     }
   
     .navbar-links ul {
@@ -181,20 +187,34 @@
   
     .navbar-hamburger {
       display: block;
-      margin-left: 1rem;
+      margin-left: 3rem;
+    }
+    .cart-container{
+      left: 40px;
+    }
+    .search-container{
+      left: 30px;
     }
   
     .navbar-links.active li {
       padding: 0.5rem 0;
     }
   
-    .search-.item {
-      width: 100%;
-      justify-content: flex-start;
+    .search-container.active .search-input {
+      width: 150px;
     }
-    .navbar-icons{
-      width: 250px;
+  }
+  @media (max-width: 468px) {
+    .search-container.active .search-input {
+      width: 150px !important;
+      padding: 2px 0;
+    }}
+    @media (max-width: 390px) {
+    .top-header-right{
+      margin-right: 40px;
     }
+    
+     
   }
   
   .navbar-links {

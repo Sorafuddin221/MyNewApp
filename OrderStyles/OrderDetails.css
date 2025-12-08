@@ -90,11 +90,16 @@
   background: rgba(220, 53, 69, 0.2);
 }
 
+.table-responsive {
+  overflow-x: auto;
+}
+
 
 @media (max-width: 768px) {
   .table-title {
     font-size: 1.2rem;
   }
+
 
   .table-main {
     font-size: 0.9rem;

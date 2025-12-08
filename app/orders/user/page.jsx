@@ -41,7 +41,7 @@ function MyOrdersPage() {
         <>
             <PageTitle title="User Order" />
             {loading ? (<Loader />) : orders.length > 0 ? (<div className="my-orders-container">
-                <div className="orders-table">
+                <div className="table-responsive">
                     <table className="orders-table">
                         <thead>
                             <tr>

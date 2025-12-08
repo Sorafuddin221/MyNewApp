@@ -1,4 +1,5 @@
 .create-product-container {
+  width: 95%;
   max-width: 600px;
   margin: 100px auto 0;
   padding: 20px;
@@ -128,5 +129,15 @@
 
   .product-form {
     gap: 10px;
+  }
+
+  .add-category-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .category-item {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

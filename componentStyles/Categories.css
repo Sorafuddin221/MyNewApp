@@ -18,8 +18,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .swiper-pagination{
-    display: none;
+     display: none;
 }
+
+@media (max-width: 768px) {
+    .category-container {
+        width: 95%;
+    }
+}
+
 
 .category-card:hover {
     transform: translateY(-5px);

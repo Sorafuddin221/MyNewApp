@@ -10,10 +10,9 @@
   }
   .product-image-container {
     position: relative; /* Changed to relative */
-    top: 40px;
-    z-index: 10;
     margin-bottom: 20px;
-    width: 500px;
+    flex: 1;
+    max-width: 500px;
   }
   
   .discount-badge {
@@ -59,9 +58,14 @@
   
   .product-info {
     padding: 20px;
-    width: 500px;
+    flex: 1;
+    max-width: 500px;
   }
-  .product-description,.product-price{
+  .product-description{
+    text-align: left;
+    word-wrap: break-word;
+  }
+  .product-price{
     text-align: left;
   }
   .product-info h2 {
@@ -207,23 +211,19 @@
 
 
   @media (max-width: 768px) {
+    .product-details-container {
+      padding: 20px;
+      margin-top: 30px;
+    }
   
-    .product-detail-container{
-        display: flex;
+    .product-detail-container {
       flex-direction: column;
-      }
+    }
   
     .product-image-container {
       position: static;
+      margin-bottom: 20px;
     }
-  }
-  @media (max-width: 568px) {
-    .product-details-container{
-       width:80%;
-       scroll-behavior:unset;
-       margin:0 auto
-      }  
- 
   }
   
   

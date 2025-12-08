@@ -50,3 +50,25 @@
     justify-content: center;
     gap: 2rem;
 }
+
+@media (max-width: 768px) {
+    .product-tabs-container {
+        width: 95vw;
+    }
+
+    .product-tabs {
+        flex-direction: column;
+    }
+
+    .product-tabs-heading {
+        font-size: 2rem;
+    }
+
+    .product-tabs-subheading {
+        font-size: 1rem;
+    }
+
+    .tab-btn {
+        font-size: 0.9rem;
+    }
+}
