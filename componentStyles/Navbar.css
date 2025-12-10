@@ -133,7 +133,7 @@
   .register-btn {
     background-color: var(--primary-main);
     color: var(--text-light);
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem .5rem;
     border-radius: 0.5rem;
     border: none;
     font-weight: 500;
@@ -159,7 +159,9 @@
       align-items: flex;
       padding: 0.5rem 1rem;
     }
-
+.register-btn{
+  margin-left: 35px;
+}
     .navbar-links {
       display: none;
       position: absolute;
@@ -187,10 +189,10 @@
   
     .navbar-hamburger {
       display: block;
-      margin-left: 3rem;
+      margin-left: 2rem;
     }
     .cart-container{
-      left: 40px;
+      left: 20px;
     }
     .search-container{
       left: 30px;
@@ -208,12 +210,18 @@
     .search-container.active .search-input {
       width: 150px !important;
       padding: 2px 0;
-    }}
+    }
+    .navbar-hamburger {
+      margin-left:2rem;
+    }
+  }
     @media (max-width: 390px) {
     .top-header-right{
       margin-right: 40px;
     }
-    
+    .navbar-hamburger {
+      margin-left:20px;
+    }
      
   }
   

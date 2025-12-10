@@ -86,9 +86,11 @@ function Navbar() {
                     </Link>
                 </div>
               {isClient && !isAuthenticated && (
+                <div className="register-btn">
                 <Link href="/register" className='register-link'>
                   <PersonAddIcon className="icon"/>
                 </Link>
+                </div>
               )}
                 <div className="navbar-hamburger" onClick={toggleMenu}>
                     {isMenuOpen? <CloseIcon className="icon"/>:<MenuIcon className="icon"/>}
