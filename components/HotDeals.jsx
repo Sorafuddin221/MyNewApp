@@ -101,9 +101,8 @@ const HotDeals = () => {
                                     <div className="hot-deal-info">
                                         <h3 className="hot-deal-name">{product.name}</h3>
                                         <div className="hot-deal-pricing">
-                                            <span className="hot-deal-offered-price">${product.offeredPrice?.toFixed(2)}</span>
-                                            <span className="hot-deal-original-price">${product.price?.toFixed(2)}</span>
-                                        </div>
+                                                                                    <span className="hot-deal-offered-price">TK {product.offeredPrice?.toFixed(2)}</span>
+                                                                                    <span className="hot-deal-original-price">TK {product.price?.toFixed(2)}</span>                                        </div>
                                     </div>
                                 </div>
                             </Link>

@@ -71,7 +71,7 @@ function CartPage() {
                                     checked={shippingMethod === "inside"}
                                     onChange={() => setShippingMethod("inside")}
                                 />
-                                <label htmlFor="inside">Inside Dhaka (80 Taka)</label>
+                                <label htmlFor="inside">Inside Dhaka (80 TK)</label>
                             </div>
                             <div className='shipping-item'>
                                 <input
@@ -82,26 +82,26 @@ function CartPage() {
                                     checked={shippingMethod === "outside"}
                                     onChange={() => setShippingMethod("outside")}
                                 />
-                                <label htmlFor="outside">Outside Dhaka (120 Taka)</label>
+                                <label htmlFor="outside">Outside Dhaka (120 TK)</label>
                             </div>
                         </div>
                     </div>
                         <h3 className="price-summary-header">Price Summary</h3>
                         <div className="summary-item">
                             <p className="summary-label">Subtotal</p>
-                            <p className="summary-label">{subtotal}/-</p>
+                            <p className="summary-label">TK {subtotal}</p>
                         </div>
                         <div className="summary-item">
                             <p className="summary-label">tax(1)</p>
-                            <p className="summary-label">{tax}/-</p>
+                            <p className="summary-label">TK {tax}</p>
                         </div>
                         <div className="summary-item">
                             <p className="summary-label">Shipping</p>
-                            <p className="summary-label">{shippingCharges}/-</p>
+                            <p className="summary-label">TK {shippingCharges}</p>
                         </div>
                         <div className="summary-total">
                             <p className="total-label">Total Amount</p>
-                            <p className="total-value">{total}/-</p>
+                            <p className="total-value">TK {total}</p>
                         </div>
                         <button className="checkout-btn" onClick={checkoutHandler}>Proceed To CheckOut</button>
                     </div>

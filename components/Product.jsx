@@ -40,11 +40,11 @@ function Product({product, hideAddToCartButton = false}) {
                 <p className="home-price">
                     {product.offeredPrice ? (
                         <>
-                            <span className="original-price">${product.price}</span>
-                            <span className="offered-price">${product.offeredPrice}</span>
+                            <span className="original-price">TK {product.price}</span>
+                            <span className="offered-price">TK {product.offeredPrice}</span>
                         </>
                     ) : (
-                        <strong>Price: ${product.price}</strong>
+                        <strong>Price: TK {product.price}</strong>
                     )}
                 </p>
                 <div className="rating_container">

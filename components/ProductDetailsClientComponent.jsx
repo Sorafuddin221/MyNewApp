@@ -156,7 +156,7 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
             "offers": {
                 "@type": "Offer",
                 "url": `${URL}/product/${product._id}`,
-                "priceCurrency": "USD",
+                "priceCurrency": "BDT",
                 "price": product.offeredPrice ? product.offeredPrice : product.price,
                 "itemCondition": "https://schema.org/NewCondition",
                 "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
@@ -221,11 +221,10 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
                         <p className="product-price">
                             {product.offeredPrice ? (
                                 <>
-                                    <span className="original-price">${product.price}</span>
-                                    <span className="offered-price">${product.offeredPrice}</span>
-                                </>
+                                                        <span className="original-price">TK {product.price}</span>
+                                                        <span className="offered-price">TK {product.offeredPrice}</span>                                </>
                             ) : (
-                                <strong>Price: ${product.price}</strong>
+                                <strong>Price: TK {product.price}</strong>
                             )}
                         </p>
                         <div className="product-rating">

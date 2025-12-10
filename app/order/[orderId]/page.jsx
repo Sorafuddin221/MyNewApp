@@ -62,7 +62,7 @@ function OrderDetailsPage({ params }) {
                                 <th>Image</th>
                                 <th>name</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
+                                <th>Price (TK)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -126,28 +126,24 @@ function OrderDetailsPage({ params }) {
                             </tr>}
                             <tr className="table-row">
                                 <th className="table-cell">Items Price :-</th>
-                                <td className='table-cell'>
-                                    {itemPrice}/-
-                                </td>
-                            </tr>
+                                                            <td className='table-cell'>
+                                                                TK {itemPrice}
+                                                            </td>                            </tr>
                             <tr className="table-row">
                                 <th className="table-cell">tax Price :-</th>
-                                <td className='table-cell'>
-                                    {taxPrice}/-
-                                </td>
-                            </tr>
+                                                            <td className='table-cell'>
+                                                                TK {taxPrice}
+                                                            </td>                            </tr>
                             <tr className="table-row">
                                 <th className="table-cell">Shipping price :-</th>
-                                <td className='table-cell'>
-                                    {shippingPrice}/-
-                                </td>
-                            </tr>
+                                                            <td className='table-cell'>
+                                                                TK {shippingPrice}
+                                                            </td>                            </tr>
                             <tr className="table-row">
                                 <th className="table-cell">Total price :-</th>
-                                <td className='table-cell'>
-                                    {totalPrice}/-
-                                </td>
-                            </tr>
+                                                            <td className='table-cell'>
+                                                                TK {totalPrice}
+                                                            </td>                            </tr>
                         </tbody>
                     </table>
                     </div>

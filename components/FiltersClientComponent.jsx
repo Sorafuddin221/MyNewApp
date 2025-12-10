@@ -59,7 +59,7 @@ function FiltersClientComponent({ categories, recentProducts }) {
                 </div>
                 <div className="recent-product-info">
                   <p className="recent-product-name">{product.name}</p>
-                  <p className="recent-product-price">${product.offeredPrice || product.price}</p>
+                  <p className="recent-product-price">TK {product.offeredPrice || product.price}</p>
                 </div>
               </Link>
             ))}

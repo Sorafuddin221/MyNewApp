@@ -64,7 +64,7 @@ useEffect(()=>{
                         <img src={item.image} alt={item.name} className="item-image" />
                         <div className="item-details">
                             <h3 className="item-name">{item.name}</h3>
-                            <p className="item-price"><strong>Price :</strong>{item.price.toFixed(1)}/-</p>
+                            <p className="item-price"><strong>Price :</strong>TK {item.price.toFixed(1)}</p>
                             <p className="item-quantity"><strong>Quantity :</strong>{item.quantity}</p>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ useEffect(()=>{
                         <button className="quantity-button-increase-btn" onClick={increaseQuantity} disabled={loading}>+</button>
                     </div>
                     <div className="item-total">
-                        <span className="item-total-price">{(item.price*item.quantity).toFixed(1)}/-</span>
+                        <span className="item-total-price">TK {(item.price*item.quantity).toFixed(1)}</span>
                     </div> 
                     <div className="item-actions">
                         
