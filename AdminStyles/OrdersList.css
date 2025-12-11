@@ -21,7 +21,7 @@
   .ordersList-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: var(--background);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
@@ -33,12 +33,12 @@
   }
   
   .ordersList-table th {
-    background-color: var(--bg-secondary);
-    color: #fff;
+    background-color: var(--background);
+    color: var(--foreground);
   }
   
   .ordersList-table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #1d1d1d;
   }
   
   .order-status.processing {

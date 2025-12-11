@@ -39,7 +39,7 @@
   background-color: var(--primary-dark); 
 }
 .cart-items {
-  background: #ffffff;
+  background: var(--background);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
@@ -121,7 +121,7 @@
   height: 32px;
   border-radius: 6px;
   border: 1px solid #e0e0e0;
-  background: #fff;
+  background: var(--background);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -179,7 +179,7 @@
 }
 
 .price-summary {
-  background: #ffffff;
+  background: var(--background);
   border-radius: 12px;
   padding: 1.5rem;
   height: fit-content;
@@ -259,7 +259,7 @@
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1.5rem;
-    background: #ffffff;
+    background: var(--background);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
@@ -456,7 +456,7 @@ shipping summary
 */
 
 .shipping-summary {
-  background: #ffffff;
+  background: var(--background);
   border-radius: 12px;
   padding: 1.5rem;
   height: fit-content;

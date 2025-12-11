@@ -14,8 +14,8 @@
 
   --border-color: #4E545C;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 2px 8px rgba(46, 46, 46, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(49, 49, 49, 0.15);
 
   --background: #ffffff; /* Default light mode background */
   --foreground: #171717; /* Default light mode foreground */

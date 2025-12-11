@@ -97,10 +97,10 @@ function OrderConfirmPage() {
                         </thead>
                         <tbody>
                             <tr>
-                                                            <td>TK {subtotal}</td>
-                                                            <td>TK {shippingCharges}</td>
-                                                            <td>TK {tax}</td>
-                                                            <td>TK {total}</td>                            </tr>
+                                <td>TK {subtotal}</td>
+                                <td>TK {shippingCharges}</td>
+                                <td>TK {tax}</td>
+                                <td>TK {total}</td>                            </tr>
                         </tbody>
                     </table>
                 </div>
