@@ -3,7 +3,7 @@
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
-    background-color: white;
+    background-color: var(--background);
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-top: 100px;
@@ -15,7 +15,7 @@
     font-weight: 600;
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--foreground);
   }
   
 
@@ -33,16 +33,16 @@
   
   .reviews-table th {
     background-color: var(--bg-secondary);
-    color: white;
+    color: var(--foreground);
     font-weight: 600;
   }
   
   .reviews-table td {
-    background-color: #f9f9f9;
+    background-color: var(--background);
   }
   
   .reviews-table tr:hover {
-    background-color: #f1f1f1;
+    background-color: var(--foreground);
   }
   
 

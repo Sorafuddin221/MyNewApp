@@ -48,7 +48,7 @@
 
 .cart-items-heading {
   font-size: 1.5rem;
-  color: #1a1a1a;
+  color: var(--foreground);
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 2px solid #f0f0f0;
@@ -62,11 +62,11 @@
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 0.8fr;
   padding: 1rem;
-  background-color: #f8f9fa;
+  background-color: var(--background);
   border-radius: 8px;
   margin-bottom: 1rem;
   font-weight: 600;
-  color: #4a4a4a;
+  color: var(--foreground);
 }
 
 .cart-item {
@@ -100,7 +100,7 @@
 .item-name {
   font-size: 1rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--foreground);
   margin: 0;
 }
 
@@ -140,7 +140,7 @@
 
 .item-total {
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--foreground);
 }
 
 .item-actions {
@@ -190,7 +190,7 @@
 
 .price-summary-heading {
   font-size: 1.25rem;
-  color: #1a1a1a;
+  color: var(--foreground);
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 2px solid #f0f0f0;
@@ -200,7 +200,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
-  color: #666;
+  color:var(--foreground);
 }
 
 .summary-total {
@@ -210,7 +210,7 @@
   padding-top: 1rem;
   border-top: 2px solid #f0f0f0;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--foreground);
   font-size: 1.1rem;
 }
 
