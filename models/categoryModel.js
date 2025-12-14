@@ -18,6 +18,15 @@ const categorySchema = new mongoose.Schema({
             },
         },
     ],
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        default: null,
+    },
+    subcategories: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+    }],
 }, { timestamps: true });
 
 

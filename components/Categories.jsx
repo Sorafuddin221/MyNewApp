@@ -51,9 +51,9 @@ const Categories = () => {
                         className="mySwiper"
                     >
                         {categories &&
-                            categories.map((category) => (
+                            categories.filter(category => !category.parent).map((category) => (
                                 <SwiperSlide key={category._id}>
-                                    <Link href={`/products?category=${category.name}`} className="category-card">
+                                    <Link href={`/products/${encodeURIComponent(category.name)}`} className="category-card">
                                         {category.image && category.image[0] && <img src={category.image[0].url} alt={category.name} />}
                                         <p>{category.name}</p>
                                     </Link>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { toast } from 'react-toastify';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -17,9 +18,17 @@ const HotDeals = () => {
     useEffect(() => {
         const fetchDeals = async () => {
             try {
-                const res = await fetch('/api/products?limit=100'); // Fetch more to find deals
+                const res = await fetch('/api/products?limit=100');
                 if (!res.ok) {
-                    throw new Error('Failed to fetch products');
+                    let errorMessage = 'Failed to fetch products';
+                    const contentType = res.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const errorData = await res.json();
+                        errorMessage = errorData.message || errorMessage;
+                    } else {
+                        errorMessage = await res.text();
+                    }
+                    throw new Error(errorMessage);
                 }
                 const data = await res.json();
                 
@@ -36,6 +45,7 @@ const HotDeals = () => {
                 setHotDeals(deals);
             } catch (error) {
                 console.error("Error fetching hot deals:", error);
+                toast.error(error.message);
             }
         };
 

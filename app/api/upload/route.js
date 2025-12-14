@@ -16,6 +16,7 @@ export async function POST(request) {
                     const result = await new Promise((resolve, reject) => {
                         cloudinary.uploader.upload_stream({
                             folder: 'products',
+                            timeout: 60000, // 60 seconds
                         }, (error, uploadResult) => {
                             if (error) {
                                 console.error("Cloudinary upload_stream error:", error); // Added logging

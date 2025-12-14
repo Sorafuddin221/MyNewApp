@@ -17,6 +17,7 @@ export function UpdateProductClient({ updateId, initialProduct, initialCategorie
     const [offeredPrice, setOfferedPrice] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
+    const [subCategory, setSubCategory] = useState("");
     const [stock, setStock] = useState("");
     const [image, setImage] = useState([]);
     const [oldImage, setOldImage] = useState([]);
@@ -47,6 +48,7 @@ export function UpdateProductClient({ updateId, initialProduct, initialCategorie
             setOfferedPrice(product.offeredPrice || "");
             setDescription(product.description || "");
             setCategory(product.category?._id || product.category || "");
+            setSubCategory(product.subCategory?._id || product.subCategory || "");
             setStock(product.stock || "");
             setOldImage(product.image || []);
         }
@@ -80,6 +82,7 @@ export function UpdateProductClient({ updateId, initialProduct, initialCategorie
         myForm.set('offeredPrice', offeredPrice);
         myForm.set('description', description);
         myForm.set('category', category);
+        myForm.set('subCategory', subCategory);
         myForm.set('stock', stock);
         image.forEach((img) => {
             myForm.append("image", img);
@@ -121,7 +124,14 @@ export function UpdateProductClient({ updateId, initialProduct, initialCategorie
                             <label htmlFor="category">Product Category</label>
                             <select onChange={(e) => setCategory(e.target.value)} value={category} className='update-product-select form-select' name="category" id="category">
                                 <option value="">Choose a Category</option>
-                                {categories && categories.map((item) => (
+                                {categories && categories.filter(item => !item.parent).map((item) => (
+                                    <option key={item._id} value={item._id}>{item.name}</option>
+                                ))}
+                            </select>
+                            <label htmlFor="subcategory">Product Sub-Category</label>
+                            <select onChange={(e) => setSubCategory(e.target.value)} value={subCategory} className='update-product-select form-select' name="subcategory" id="subcategory">
+                                <option value="">Choose a Sub-Category</option>
+                                {category && categories && categories.find(cat => cat._id === category)?.subcategories?.map((item) => (
                                     <option key={item._id} value={item._id}>{item.name}</option>
                                 ))}
                             </select>

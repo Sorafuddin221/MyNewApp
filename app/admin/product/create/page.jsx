@@ -23,12 +23,14 @@ function CreateProductPage() {
     const [offeredPrice, setOfferedPrice] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
+    const [subCategory, setSubCategory] = useState("");
     const [stock, setStock] = useState("");
     const [image, setImage] = useState([]);
     const [imagePreview, setImagePreview] = useState([]);
     const [newCategory, setNewCategory] = useState("");
     const [editingCategory, setEditingCategory] = useState(null);
     const [editedCategoryName, setEditedCategoryName] = useState("");
+    const [parentCategory, setParentCategory] = useState("");
     const [newCategoryImage, setNewCategoryImage] = useState("");
     const [newCategoryImagePreview, setNewCategoryImagePreview] = useState("");
     const [editingCategoryImage, setEditingCategoryImage] = useState("");
@@ -38,12 +40,16 @@ function CreateProductPage() {
         if (newCategory.trim() !== "" && newCategoryImage !== "") {
             const formData = new FormData();
             formData.set('name', newCategory);
-            formData.set('image', newCategoryImage); // Assuming newCategoryImage is a File object or base64 string
+            formData.set('image', newCategoryImage); 
+            if (parentCategory) {
+                formData.set('parent', parentCategory);
+            }
             await dispatch(createCategory(formData));
             setNewCategory("");
             setNewCategoryImage("");
             setNewCategoryImagePreview("");
-            dispatch(getAllCategories()); // Refresh categories after adding
+            setParentCategory("");
+            dispatch(getAllCategories()); 
         }
     };
 
@@ -122,6 +128,7 @@ function CreateProductPage() {
         myForm.set('offeredPrice', offeredPrice);
         myForm.set('description', description);
         myForm.set('category', category);
+        myForm.set('subCategory', subCategory);
         myForm.set('stock', stock);
         // Send image details as JSON string
         myForm.set('images', JSON.stringify(uploadedImages)); 
@@ -184,6 +191,7 @@ function CreateProductPage() {
             setOfferedPrice("");
             setDescription("");
             setCategory("");
+            setSubCategory("");
             setStock("");
             setImage([]);
             setImagePreview([]);
@@ -207,11 +215,7 @@ function CreateProductPage() {
                         init={{
                             height: 300,
                             menubar: false,
-                            plugins: [
-                                'advlist autolink lists link image charmap print preview anchor',
-                                'searchreplace visualblocks code fullscreen',
-                                'insertdatetime media table paste code help wordcount'
-                            ],
+                            plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
                             toolbar:
                                 'undo redo | formatselect | bold italic backcolor | \
                                 alignleft aligncenter alignright alignjustify | \
@@ -223,6 +227,12 @@ function CreateProductPage() {
                     <select value={category} onChange={(e) => setCategory(e.target.value)} name='category' id="" className="form-select">
                         <option value="" required >Choose a Category</option>
                         {categories && categories.map((item) => (
+                            <option key={item._id} value={item._id}>{item.name}</option>
+                        ))}
+                    </select>
+                    <select value={subCategory} onChange={(e) => setSubCategory(e.target.value)} name='subCategory' id="" className="form-select">
+                        <option value="" required >Choose a Sub-Category</option>
+                        {category && categories && categories.find(cat => cat._id === category)?.subcategories?.map((item) => (
                             <option key={item._id} value={item._id}>{item.name}</option>
                         ))}
                     </select>
@@ -247,6 +257,16 @@ function CreateProductPage() {
                             value={newCategory}
                             onChange={(e) => setNewCategory(e.target.value)}
                         />
+                        <select
+                            className="form-select"
+                            value={parentCategory}
+                            onChange={(e) => setParentCategory(e.target.value)}
+                        >
+                            <option value="">Select Parent Category (optional)</option>
+                            {categories && categories.map((cat) => (
+                                !cat.parent && <option key={cat._id} value={cat._id}>{cat.name}</option>
+                            ))}
+                        </select>
                         <div className="file-input-container">
                             <input
                                 type="file"
@@ -273,55 +293,112 @@ function CreateProductPage() {
                     </div>
                     <div className="category-list">
                         {categories && categories.map((categoryItem) => (
-                            <div key={categoryItem._id} className="category-item">
-                                {editingCategory === categoryItem._id ? (
-                                    <>
-                                        <input
-                                            type="text"
-                                            className="form-input"
-                                            value={editedCategoryName}
-                                            onChange={(e) => setEditedCategoryName(e.target.value)}
-                                        />
-                                        <div className="file-input-container">
+                            !categoryItem.parent && (
+                                <div key={categoryItem._id} className="category-item">
+                                    {editingCategory === categoryItem._id ? (
+                                        <>
                                             <input
-                                                type="file"
-                                                className="form-input-file"
-                                                accept='image/*'
-                                                onChange={(e) => {
-                                                    const file = e.target.files[0];
-                                                    if (!file) return;
-                                                    setEditingCategoryImage(file); // Set the file object for submission
-                                                    const reader = new FileReader();
-                                                    reader.onload = () => {
-                                                        if (reader.readyState === 2) {
-                                                            setEditingCategoryImagePreview(reader.result); // Set the base64 string for preview
-                                                        }
-                                                    };
-                                                    reader.readAsDataURL(file);
-                                                }}
+                                                type="text"
+                                                className="form-input"
+                                                value={editedCategoryName}
+                                                onChange={(e) => setEditedCategoryName(e.target.value)}
                                             />
+                                            <div className="file-input-container">
+                                                <input
+                                                    type="file"
+                                                    className="form-input-file"
+                                                    accept='image/*'
+                                                    onChange={(e) => {
+                                                        const file = e.target.files[0];
+                                                        if (!file) return;
+                                                        setEditingCategoryImage(file);
+                                                        const reader = new FileReader();
+                                                        reader.onload = () => {
+                                                            if (reader.readyState === 2) {
+                                                                setEditingCategoryImagePreview(reader.result);
+                                                            }
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    }}
+                                                />
+                                            </div>
+                                            {editingCategoryImagePreview && (
+                                                <img src={editingCategoryImagePreview} alt="Category Preview" className="image-preview" />
+                                            )}
+                                            <div className="category-item-buttons">
+                                                <button className="submit-btn" onClick={handleSaveEditedCategory}>Save</button>
+                                                <button className="submit-btn" onClick={handleCancelEdit}>Cancel</button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>{categoryItem.name}</span>
+                                            {categoryItem.image && categoryItem.image.length > 0 && (
+                                                <img src={categoryItem.image[0].url} alt="Category" className="category-image-small" />
+                                            )}
+                                            <div className="category-item-buttons">
+                                                <button className="submit-btn" onClick={() => handleEditCategory(categoryItem._id, categoryItem.name, categoryItem.image)}>Edit</button>
+                                                <button className="submit-btn" onClick={() => handleDeleteCategory(categoryItem._id)}>Delete</button>
+                                            </div>
+                                        </>
+                                    )}
+                                    {categoryItem.subcategories && categoryItem.subcategories.length > 0 && (
+                                        <div className="subcategory-list">
+                                            {categoryItem.subcategories.map((subItem) => (
+                                                <div key={subItem._id} className="category-item">
+                                                    {editingCategory === subItem._id ? (
+                                                        <>
+                                                            <input
+                                                                type="text"
+                                                                className="form-input"
+                                                                value={editedCategoryName}
+                                                                onChange={(e) => setEditedCategoryName(e.target.value)}
+                                                            />
+                                                            <div className="file-input-container">
+                                                                <input
+                                                                    type="file"
+                                                                    className="form-input-file"
+                                                                    accept='image/*'
+                                                                    onChange={(e) => {
+                                                                        const file = e.target.files[0];
+                                                                        if (!file) return;
+                                                                        setEditingCategoryImage(file);
+                                                                        const reader = new FileReader();
+                                                                        reader.onload = () => {
+                                                                            if (reader.readyState === 2) {
+                                                                                setEditingCategoryImagePreview(reader.result);
+                                                                            }
+                                                                        };
+                                                                        reader.readAsDataURL(file);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            {editingCategoryImagePreview && (
+                                                                <img src={editingCategoryImagePreview} alt="Category Preview" className="image-preview" />
+                                                            )}
+                                                            <div className="category-item-buttons">
+                                                                <button className="submit-btn" onClick={handleSaveEditedCategory}>Save</button>
+                                                                <button className="submit-btn" onClick={handleCancelEdit}>Cancel</button>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span>-- {subItem.name}</span>
+                                                            {subItem.image && subItem.image.length > 0 && (
+                                                                <img src={subItem.image[0].url} alt="Category" className="category-image-small" />
+                                                            )}
+                                                            <div className="category-item-buttons">
+                                                                <button className="submit-btn" onClick={() => handleEditCategory(subItem._id, subItem.name, subItem.image)}>Edit</button>
+                                                                <button className="submit-btn" onClick={() => handleDeleteCategory(subItem._id)}>Delete</button>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            ))}
                                         </div>
-                                        {editingCategoryImagePreview && (
-                                            <img src={editingCategoryImagePreview} alt="Category Preview" className="image-preview" />
-                                        )}
-                                        <div className="category-item-buttons">
-                                            <button className="submit-btn" onClick={handleSaveEditedCategory}>Save</button>
-                                            <button className="submit-btn" onClick={handleCancelEdit}>Cancel</button>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span>{categoryItem.name}</span>
-                                        {categoryItem.image && categoryItem.image.length > 0 && (
-                                            <img src={categoryItem.image[0].url} alt="Category" className="category-image-small" />
-                                        )}
-                                        <div className="category-item-buttons">
-                                            <button className="submit-btn" onClick={() => handleEditCategory(categoryItem._id, categoryItem.name, categoryItem.image)}>Edit</button>
-                                            <button className="submit-btn" onClick={() => handleDeleteCategory(categoryItem._id)}>Delete</button>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
+                                    )}
+                                </div>
+                            )
                         ))}
                     </div>
                 </div>

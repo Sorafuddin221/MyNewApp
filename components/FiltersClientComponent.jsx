@@ -10,7 +10,8 @@ function FiltersClientComponent({ categories, recentProducts }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get('category');
-  
+  const currentSubCategory = searchParams.get('subcategory');
+
   const handleCategoryClick = (categoryName) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     if (categoryName) {
@@ -18,9 +19,18 @@ function FiltersClientComponent({ categories, recentProducts }) {
     } else {
       newSearchParams.delete('category');
     }
+    newSearchParams.delete('subcategory'); // Always remove subcategory when a main category is clicked
     newSearchParams.delete('page'); // Reset page when category changes
     router.push(`/products?${newSearchParams.toString()}`);
   };
+
+  const handleSubCategoryClick = (categoryName, subCategoryName) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('category', categoryName);
+    newSearchParams.set('subcategory', subCategoryName);
+    newSearchParams.delete('page'); // Reset page when filter changes
+    router.push(`/products?${newSearchParams.toString()}`);
+  }
 
   return (
     <div className="filter-section">
@@ -32,14 +42,28 @@ function FiltersClientComponent({ categories, recentProducts }) {
         >
           All
         </li>
-        {categories.map((cat) => (
-          <li
-            key={cat._id}
-            onClick={() => handleCategoryClick(cat.name)}
-            className={currentCategory === cat.name ? 'active' : ''}
-          >
-            {cat.name}
-          </li>
+        {categories.filter(cat => !cat.parent).map((cat) => (
+          <React.Fragment key={cat._id}>
+            <li
+              onClick={() => handleCategoryClick(cat.name)}
+              className={currentCategory === cat.name && !currentSubCategory ? 'active' : ''}
+            >
+              {cat.name}
+            </li>
+            {cat.subcategories && cat.subcategories.length > 0 && (
+              <ul className="subcategory-list">
+                {cat.subcategories.map((subcat) => (
+                  <li
+                    key={subcat._id}
+                    onClick={() => handleSubCategoryClick(cat.name, subcat.name)}
+                    className={currentSubCategory === subcat.name ? 'active' : ''}
+                  >
+                    {subcat.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </React.Fragment>
         ))}
       </ul>
 

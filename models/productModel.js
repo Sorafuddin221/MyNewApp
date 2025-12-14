@@ -39,6 +39,10 @@ image:[
             ref:"Category",
             required:[true,"please enter product category"]
         },
+        subCategory: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Category',
+        },
         tags:{
             type:String,
             

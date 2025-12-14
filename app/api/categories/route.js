@@ -6,7 +6,7 @@ export async function GET() {
     await connectMongoDatabase();
 
     try {
-        const categories = await Category.find();
+        const categories = await Category.find({ parent: null }).populate('subcategories');
 
         return NextResponse.json({
             success: true,

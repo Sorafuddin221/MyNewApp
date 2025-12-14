@@ -9,8 +9,8 @@ export async function getUpdateProductData(updateId) {
     if (updateId && updateId !== 'undefined') {
         try {
             await connectMongoDatabase();
-            const productPromise = ProductModel.findById(updateId).populate('category').lean();
-            const categoriesPromise = CategoryModel.find({}).lean();
+            const productPromise = ProductModel.findById(updateId).populate('category').populate('subCategory').lean(); // Populate subCategory
+            const categoriesPromise = CategoryModel.find({}).populate('subcategories').lean(); // Populate subcategories
 
             const [productResult, categoriesResult] = await Promise.all([productPromise, categoriesPromise]);
 

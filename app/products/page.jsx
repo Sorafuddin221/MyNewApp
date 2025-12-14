@@ -1,41 +1,38 @@
 import React from 'react';
 
 export const dynamic = 'force-dynamic';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import PageTitle from '@/components/PageTitle';
 import '@/pageStyles/Products.css';
-import Product from '@/components/Product';
-import NoProducts from '@/components/NoProducts';
-import Pagination from '@/components/Pagination';
 import Category from '@/models/categoryModel';
 import connectMongoDatabase from '@/lib/db';
 import ProductModel from '@/models/productModel';
 import APIFunctionality from '@/utils/apiFunctionality';
 import Filters from '@/components/Filters';
-import ProductsClientComponent from './ProductsClientComponent'; // New Import
-import { getServerSession } from 'next-auth'; // Assuming next-auth is or will be used
+import ProductsClientComponent from './ProductsClientComponent'; 
 
-async function getProducts({ keyword, category, page = 1 }) {
+async function getProducts({ keyword, category, subcategory, page = 1 }) {
   await connectMongoDatabase();
-  let queryStr = { page }; // Include page in queryStr
+  
+  let queryStr = { page }; 
   if (keyword) {
     queryStr.keyword = keyword;
   }
+  // Pass category and subcategory names to queryStr for APIFunctionality to handle
   if (category) {
-    const categoryDoc = await Category.findOne({ name: category });
-    if (categoryDoc) {
-      queryStr.category = categoryDoc._id.toString();
-    } else {
-      queryStr.category = '000000000000000000000000';
-    }
+      queryStr.category = category;
   }
-
-  const resultsPerPage = 6; // This should match what's in the API
+  if (subcategory) {
+      queryStr.subcategory = subcategory;
+  }
+  
+  const resultsPerPage = 6; 
   const apiFeatures = new APIFunctionality(ProductModel.find(), queryStr)
-    .search()
-    .filter()
-    .sort('-createdAt');
+    .search();
+  
+  // Await the filter method since it's now async
+  await apiFeatures.filter(); 
+
+  apiFeatures.sort(); 
 
   const filteredQuery = apiFeatures.query.clone();
   const productCount = await filteredQuery.countDocuments();
@@ -56,7 +53,7 @@ async function getProducts({ keyword, category, page = 1 }) {
 
 async function getCategories() {
   await connectMongoDatabase();
-  const categories = await Category.find({});
+  const categories = await Category.find({ parent: null }).populate('subcategories');
   return JSON.parse(JSON.stringify(categories));
 }
 
@@ -70,30 +67,31 @@ async function getRecentProducts() {
 
 export default async function ProductsPage({ searchParams }) {
   let resolvedSearchParams;
-  // This is a workaround for an unusual environment where searchParams is a Promise.
   if (searchParams && typeof searchParams.then === 'function') {
     resolvedSearchParams = await searchParams;
   } else {
     resolvedSearchParams = searchParams;
   }
   
-    const { keyword, category, page } = resolvedSearchParams;
-    const { products, productCount, totalPages, currentPage } = await getProducts({ keyword, category, page });
+    const { keyword, category, subcategory, page } = resolvedSearchParams;
+    const { products, productCount, totalPages, currentPage } = await getProducts({ keyword, category, subcategory, page });
     const categories = await getCategories();
     const recentProducts = await getRecentProducts();
   
     return (
       <>
-      
         <PageTitle title="All Products" />
-        {/* Navbar and Footer are in layout.jsx, no need to include here */}
         <div className='products-layout'>
-          <Filters categories={categories} recentProducts={recentProducts} /> {/* This will be a client component */}
-          <ProductsClientComponent
-              products={products}
-              totalPages={totalPages}                  currentPage={currentPage}
-                  keyword={keyword}
-              />
-            </div>    </>
-  );
+          <Filters categories={categories} recentProducts={recentProducts} />
+                        <ProductsClientComponent
+                            products={products}
+                            totalPages={totalPages}
+                            currentPage={currentPage}
+                            keyword={keyword}
+                            categories={categories}
+                            category={category}
+                            showSubCategoryCards={false} 
+                        />            </div>
+      </>
+    );
 }

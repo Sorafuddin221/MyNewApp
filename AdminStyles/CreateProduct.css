@@ -1,3 +1,4 @@
+
 .create-product-container {
   width: 95%;
   max-width: 600px;
@@ -52,8 +53,8 @@
 }
 
 .image-preview {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -88,6 +89,7 @@
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Added this line */
 }
 
 .category-list {

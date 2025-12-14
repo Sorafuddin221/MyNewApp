@@ -87,8 +87,6 @@ export async function GET(req) {
 
         } else {
             // Existing logic using APIFunctionality
-            let baseQuery = Product.find();
-
             const tabKeyword = queryStr.keyword;
             const specialKeywords = ['featured', 'new-arrival', 'offer'];
 
@@ -98,16 +96,21 @@ export async function GET(req) {
                 if (tabKeyword === 'new-arrival') {
                     queryStr.sort = '-createdAt';
                 } else if (tabKeyword === 'offer') {
-                    baseQuery = baseQuery.where('offeredPrice').exists(true).ne(null);
+                    // For 'offer', APIFunctionality needs to handle the offeredPrice filter
+                    // This will be done in APIFunctionality.filter()
+                    queryStr.hasOffer = true; 
                 } else if (tabKeyword === 'featured') {
                     queryStr.sort = '-ratings';
                 }
             }
 
-            const apiFeatures = new APIFunctionality(baseQuery, queryStr)
-                .search()
-                .filter()
-                .sort();
+            const apiFeatures = new APIFunctionality(Product.find(), queryStr)
+                .search();
+            
+            // Await the filter method since it's now async
+            await apiFeatures.filter();
+
+            apiFeatures.sort(); // sort() method in APIFunctionality already handles default or queryStr.sort
 
             const filteredQuery = apiFeatures.query.clone();
             const productCount = await filteredQuery.countDocuments();

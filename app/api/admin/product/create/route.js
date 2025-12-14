@@ -27,6 +27,7 @@ export const POST = handleAsyncError(async (request) => {
     const offeredPrice = formData.get('offeredPrice');
     const description = formData.get('description');
     const category = formData.get('category');
+    const subCategory = formData.get('subCategory');
     const stock = formData.get('stock');
     const imagesString = formData.get('images');
 
@@ -41,7 +42,8 @@ export const POST = handleAsyncError(async (request) => {
         price,
         offeredPrice,
         description,
-        category,
+        category: subCategory || category,
+        subCategory: subCategory || undefined,
         stock,
         image: images,
         user: userId, // Use the dynamically determined userId

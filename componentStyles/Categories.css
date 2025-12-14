@@ -16,6 +16,7 @@
     border-radius: 12px;
     padding: 1.5rem;
   box-shadow: var(--shadow-sm);
+  margin-top: 2.5rem;
 }
 .swiper-pagination{
      display: none;

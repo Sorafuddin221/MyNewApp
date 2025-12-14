@@ -15,7 +15,7 @@ export const getAllCategories = createAsyncThunk('category/getAllCategories', as
 export const createCategory = createAsyncThunk('category/createCategory', async (categoryData, { rejectWithValue }) => {
     try {
         // No headers needed for multipart/form-data, axios handles it
-        const { data } = await axios.post('/api/admin/category/create', categoryData);
+        const { data } = await axios.post('/api/admin/categories', categoryData);
         return data.category;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');
@@ -25,8 +25,12 @@ export const createCategory = createAsyncThunk('category/createCategory', async 
 // Update a category
 export const updateCategory = createAsyncThunk('category/updateCategory', async ({ id, categoryData }, { rejectWithValue }) => {
     try {
-        // No headers needed for multipart/form-data, axios handles it
-        const { data } = await axios.put(`/api/admin/category/${id}`, categoryData);
+        const formData = new FormData();
+        formData.set('id', id);
+        for (const key in categoryData) {
+            formData.set(key, categoryData[key]);
+        }
+        const { data } = await axios.put(`/api/admin/categories`, formData);
         return data.category;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');
@@ -36,7 +40,7 @@ export const updateCategory = createAsyncThunk('category/updateCategory', async 
 // Delete a category
 export const deleteCategory = createAsyncThunk('category/deleteCategory', async (id, { rejectWithValue }) => {
     try {
-        const { data } = await axios.delete(`/api/admin/category/${id}`);
+        const { data } = await axios.delete(`/api/admin/categories`, { data: { id } });
         return id;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');
