@@ -72,6 +72,9 @@ export default async function ProductsPage({ searchParams }) {
     const categories = await getCategories();
     const recentProducts = await getRecentProducts();
 
+    const currentCategory = categories.find(cat => cat.name === resolvedSearchParams.category);
+    const showSubCategoryCards = currentCategory && currentCategory.subcategories && currentCategory.subcategories.length > 0 && !resolvedSearchParams.subcategory;
+
     return (
       <>
         <PageTitle title="All Products" />
@@ -84,7 +87,7 @@ export default async function ProductsPage({ searchParams }) {
                             keyword={resolvedSearchParams.keyword}
                             categories={categories}
                             category={resolvedSearchParams.category}
-                            showSubCategoryCards={false}
+                            showSubCategoryCards={showSubCategoryCards}
                             resultsPerPage={resultsPerPage}
                         />            </div>
       </>

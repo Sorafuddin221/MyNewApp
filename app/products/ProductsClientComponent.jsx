@@ -15,13 +15,8 @@ const ProductsClientComponent = ({ products, totalPages, currentPage, keyword, c
     const handlePageChange = (page) => {
         const newSearchParams = new URLSearchParams(searchParams.toString());
         newSearchParams.set('page', page);
-
-        let path = '/products';
-        if (searchParams.has('category')) {
-            path = `/products/${encodeURIComponent(searchParams.get('category'))}`;
-        }
         
-        router.push(`${path}?${newSearchParams.toString()}`);
+        router.push(`/products?${newSearchParams.toString()}`);
     };
 
     const currentCategory = categories.find(cat => cat.name === category);
@@ -34,10 +29,11 @@ const ProductsClientComponent = ({ products, totalPages, currentPage, keyword, c
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                                                     {currentCategory.subcategories.map(sub => {
                                                         const newSearchParams = new URLSearchParams(searchParams.toString());
+                                                        newSearchParams.set('category', category); // Ensure parent category is preserved
                                                         newSearchParams.set('subcategory', sub.name);
                                                         newSearchParams.delete('page'); // Reset page when filter changes
 
-                                                        const newHref = `/products/${encodeURIComponent(category)}?${newSearchParams.toString()}`;
+                                                        const newHref = `/products?${newSearchParams.toString()}`;
 
                                                         return (
                                                             <Link key={sub._id} href={newHref} className="category-card">

@@ -66,7 +66,10 @@ class APIFunctionality {
             }
 
             if (resolvedCategoryIds.length > 0) {
-                combinedFilters.category = { $in: resolvedCategoryIds };
+                combinedFilters.$or = [
+                    { category: { $in: resolvedCategoryIds } },
+                    { subCategory: { $in: resolvedCategoryIds } }
+                ];
             }
         }
 

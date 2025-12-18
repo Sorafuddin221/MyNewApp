@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* Default Light Mode Variables (apply to html.light or if no theme class is present) */
 :root {
   --primary-main: #4E545C;
   --primary-dark: #1F1E23;
@@ -17,16 +18,45 @@
   --shadow-sm: 0 2px 8px rgba(46, 46, 46, 0.2);
   --shadow-md: 0 4px 6px -1px rgba(49, 49, 49, 0.15);
 
-  --background: #ffffff; /* Default light mode background */
-  --foreground: #171717; /* Default light mode foreground */
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* New theme-dependent variables */
+  --card-bg: #FFFFFF;
+  --card-border: #E0E0E0;
+  --input-bg: #F5F5F5;
+  --input-text: #333333;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a; /* Dark mode background */
-    --foreground: #ededed; /* Dark mode foreground */
-  }
+/* Dark Mode Variables */
+html.dark {
+  --primary-main: #6B7280; /* Adjust primary colors for dark mode */
+  --primary-dark: #1F2937;
+  --primary-light: #E1E1E1;
+
+  --bg-primary: #111827;
+  --bg-secondary: #374151;
+
+  --text-primary: #F3F4F6;
+  --text-secondary: #D1D5DB;
+  --text-light: #FFFFFF;
+
+  --border-color: #4B5563;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  /* New theme-dependent variables for dark mode */
+  --card-bg: #1F2937;
+  --card-border: #374151;
+  --input-bg: #374151;
+  --input-text: #F3F4F6;
 }
+
+
 
 * {
   margin: 0;
