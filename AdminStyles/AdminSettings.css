@@ -1,0 +1,117 @@
+:root {
+    /* Define button-specific colors for clarity */
+    --button-primary-bg: #007bff; /* Blue */
+    --button-primary-hover-bg: #0056b3; /* Darker Blue */
+    --button-success-bg: #28a745; /* Green */
+    --button-success-hover-bg: #218838; /* Darker Green */
+    --button-danger-bg: #dc3545; /* Red */
+    --button-danger-hover-bg: #c82333; /* Darker Red */
+}
+
+.admin-settings-container {
+    padding: 2rem;
+    background-color: var(--background-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.admin-settings-container h3 {
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.settings-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.settings-form .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.settings-form .form-group input[type="text"],
+.settings-form .form-group input[type="url"],
+.settings-form .form-group input[type="number"],
+.settings-form .form-group input[type="file"] { /* Added file input */
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    background-color: var(--input-background);
+}
+
+.settings-form .form-group input[type="text"]:focus,
+.settings-form .form-group input[type="url"]:focus,
+.settings-form .form-group input[type="number"]:focus,
+.settings-form .form-group input[type="file"]:focus { /* Added file input */
+    border-color: var(--button-primary-bg); /* Use primary button color for focus */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* Adjust shadow for new primary color */
+}
+
+.settings-form .btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--button-primary-bg);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.settings-form .btn:hover {
+    background-color: var(--button-primary-hover-bg);
+}
+
+/* For special offers, allowing multiple entries */
+.special-offer-item {
+    background-color: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.special-offer-item .remove-btn {
+    background-color: var(--button-danger-bg);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+.special-offer-item .remove-btn:hover {
+    background-color: var(--button-danger-hover-bg);
+}
+
+.add-offer-btn {
+    background-color: var(--button-success-bg);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.add-offer-btn:hover {
+    background-color: var(--button-success-hover-bg);
+}

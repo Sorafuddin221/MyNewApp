@@ -58,6 +58,28 @@ function DashboardPage() {
                             </Link>
                         </div>
                         <div className="nav-section">
+                            <h3>Slides</h3>
+                            <Link href="/admin/slides/all">
+                                <Inventory className='nav-icon' />
+                                All Slides
+                            </Link>
+                            <Link href="/admin/slides/create">
+                                <Inventory className='nav-icon' />
+                                Add New Slide
+                            </Link>
+                        </div>
+                        <div className="nav-section">
+                            <h3>Special Offers</h3>
+                            <Link href="/admin/offers/all">
+                                <Inventory className='nav-icon' />
+                                All Special Offers
+                            </Link>
+                            <Link href="/admin/offers/create">
+                                <Inventory className='nav-icon' />
+                                Add New Special Offer
+                            </Link>
+                        </div>
+                        <div className="nav-section">
                             <h3>Users</h3>
                             <Link href="/admin/users">
                                 <People className='nav-icon' />

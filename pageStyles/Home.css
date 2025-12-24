@@ -7,24 +7,39 @@
   justify-content: space-around;
   margin-top:3rem;
 }
-
   
-  .home-heading {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: 2rem;
-    color: var(--foreground);
-    text-shadow: var(--shadow-sm);
-    text-align: center;
+.home-heading {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--foreground);
+  text-shadow: var(--shadow-sm);
+  text-align: center;
+}
+  
+.home-product-container {
+  flex-wrap: wrap;
+  gap: 3.5rem;
+  width: 100%;
+  max-width: 1200px;
+  padding: 1rem;
 }
 
-  
-  .home-product-container {
-    flex-wrap: wrap;
-    gap: 3.5rem;
-        width: 100%;
-    max-width: 1200px;
-    padding: 1rem;
+.hero-section-wrapper {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  margin-top: 6rem; /* Adjust based on header height */
+  overflow: hidden; /* To prevent scrollbars on the main layout */
+}
+
+.main-slider-container {
+  width: 75%; /* 75% of the hero-section-wrapper's width */
+  height: 100%; /* Full height of the hero-section-wrapper */
+}
+
+.special-offer-container {
+  width: 25%; /* 25% of the hero-section-wrapper's width */
+  height: 100%; /* Full height of the hero-section-wrapper */
 }
   
 @media (max-width: 900px) {
@@ -32,6 +47,31 @@
     display: flex;
     flex-wrap: wrap;
     gap: 7rem;
+  }
 }
-  
+
+/* Basic responsiveness for the hero section */
+@media (max-width: 768px) {
+  .hero-section-wrapper {
+    flex-direction: column; /* Stack vertically on smaller screens */
+    height: auto; /* Allow height to adjust */
+    margin-top: 4rem; /* Adjust margin for smaller screens */
+  }
+
+  .main-slider-container,
+  .special-offer-container {
+    width: 100%; /* Full width on smaller screens */
+    height: 50vh; /* Half viewport height for each section */
+  }
+}
+
+@media (max-width: 568px) {
+  .hero-section-wrapper {
+    margin-top: 3rem; /* Further adjust margin for very small screens */
+  }
+
+  .main-slider-container,
+  .special-offer-container {
+    height: 40vh; /* Adjust height for very small screens */
+  }
 }
