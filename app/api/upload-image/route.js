@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
-import path from 'path';
-import { promises as fs } from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true // Use HTTPS
+});
 
 export async function POST(request) {
   try {
@@ -12,19 +19,18 @@ export async function POST(request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = Date.now() + '-' + file.name;
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const filePath = path.join(uploadDir, filename);
 
-    // Ensure the uploads directory exists
-    await fs.mkdir(uploadDir, { recursive: true });
-    await fs.writeFile(filePath, buffer);
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(`data:${file.type};base64,${buffer.toString('base64')}`, {
+      folder: 'EasyShopApp', // Optional: folder in Cloudinary to organize uploads
+      resource_type: 'image' // Ensure it's treated as an image
+    });
 
-    const imageUrl = `/uploads/${filename}`;
+    const imageUrl = result.secure_url;
     return NextResponse.json({ imageUrl }, { status: 200 });
 
   } catch (error) {
-    console.error('Error uploading image:', error);
+    console.error('Error uploading image to Cloudinary:', error);
     return NextResponse.json({ message: 'Error uploading image' }, { status: 500 });
   }
 }
