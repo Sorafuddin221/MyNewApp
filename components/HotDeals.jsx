@@ -60,9 +60,6 @@ const HotDeals = () => {
         <section className="hot-deals-section">
         <div className="hot-deals-header">
             <h2 className="hot-deals-title">Hot Deals</h2>
-            <Link href="/products?type=hot-deals" className="view-all-link">
-                View All
-            </Link>
         </div>
             <Swiper
                 spaceBetween={30}

@@ -1,18 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadUser } from '@/features/user/userSlice';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import UserDashboard from './UserDashboard';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-export default function LayoutClient({ children }) {
+export default function LayoutClient({ children, settings }) {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -20,13 +17,26 @@ export default function LayoutClient({ children }) {
     }
   }, [dispatch, isAuthenticated]);
 
+  useEffect(() => {
+    if (settings?.siteFaviconUrl) {
+      const favicon = document.querySelector("link[rel~='icon']");
+      if (favicon) {
+        favicon.href = settings.siteFaviconUrl;
+      } else {
+        const link = document.createElement('link');
+        link.rel = 'icon';
+        link.href = settings.siteFaviconUrl;
+        document.head.appendChild(link);
+      }
+    }
+  }, [settings]);
+
   return (
     <>
-      <Navbar />
+      <Navbar siteLogoUrl={settings?.siteLogoUrl} textIcon={settings?.textIcon} />
       {children}
       {isAuthenticated && user && <UserDashboard user={user} />}
       <Footer />
-      <ToastContainer autoClose={3000} theme="colored" />
     </>
   );
 }

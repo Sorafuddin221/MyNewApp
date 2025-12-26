@@ -12,6 +12,7 @@ export async function GET(req) {
     let queryStr = Object.fromEntries(searchParams.entries());
 
     const discountParam = searchParams.get('discount');
+    const typeParam = searchParams.get('type'); // New: Get 'type' parameter
     const tabKeyword = queryStr.keyword;
     const page = Number(queryStr.page) || 1;
     const resultsPerPage = 6;
@@ -134,6 +135,73 @@ export async function GET(req) {
                 currentpage: page
             }, { status: 200 });
 
+        } else if (typeParam === 'hot-deals') { // New: Handle 'hot-deals' type
+            const discountValue = 20; // Fixed 20% discount for hot deals
+
+            let aggregationPipeline = [
+                {
+                    $match: {
+                        price: { $exists: true, $ne: null, $gt: 0 },
+                        offeredPrice: { $exists: true, $ne: null, $gte: 0 } 
+                    }
+                },
+                {
+                    $addFields: {
+                        discountPercentage: {
+                            $cond: {
+                                if: { $gt: ["$price", 0] },
+                                then: { $multiply: [{ $subtract: [1, { $divide: ["$offeredPrice", "$price"] }] }, 100] },
+                                else: 0
+                            }
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        discountPercentage: { $gte: discountValue }
+                    }
+                }
+            ];
+
+            const countPipeline = [...aggregationPipeline, { $count: "total" }];
+            const countResult = await Product.aggregate(countPipeline);
+            const productCount = countResult.length > 0 ? countResult[0].total : 0;
+
+            const totalPages = Math.ceil(productCount / resultsPerPage);
+
+            if (page > totalPages && productCount > 0) {
+                return NextResponse.json({ message: "This page does not exist" }, { status: 404 });
+            }
+
+            const sortBy = queryStr.sort || '-discountPercentage'; 
+            let sortStage = {};
+            if (sortBy.startsWith('-')) {
+                sortStage[sortBy.substring(1)] = -1;
+            } else {
+                sortStage[sortBy] = 1;
+            }
+
+            aggregationPipeline.push({ $sort: sortStage });
+            aggregationPipeline.push({ $skip: resultsPerPage * (page - 1) });
+            aggregationPipeline.push({ $limit: resultsPerPage });
+            
+            const products = await Product.aggregate(aggregationPipeline);
+
+            const populatedProducts = await Product.populate(products, { path: 'category' });
+
+            if (!populatedProducts || populatedProducts.length === 0) {
+                return NextResponse.json({ success: true, products: [], productCount: 0, resultsPerPage: resultsPerPage, totalPages: 0, currentpage: 1 }, { status: 200 });
+            }
+
+            return NextResponse.json({
+                success: true,
+                products: populatedProducts,
+                productCount,
+                resultsPerPage,
+                totalPages,
+                currentpage: page
+            }, { status: 200 });
+        
         } else {
             // Existing logic using APIFunctionality
             const specialKeywords = ['featured', 'new-arrival', 'offer', 'top-rated'];

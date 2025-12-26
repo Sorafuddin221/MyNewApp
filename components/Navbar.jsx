@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import  SearchIcon from '@mui/icons-material/Search';
 import  ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -15,7 +16,7 @@ import '../componentStyles/Navbar.css';
 import { useSelector } from 'react-redux';
 
 
-function Navbar() {
+function Navbar({ siteLogoUrl, textIcon }) {
     const [isMenuOpen,setisMenuOpen]=useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery,setSearchQuery]=useState("");
@@ -72,7 +73,13 @@ function Navbar() {
       <div className="main-nav">
         <div className="navbar-container">
             <div className="navbar-logo">
-                <Link href='/' onClick={()=>setisMenuOpen(false)}>ShopEasy</Link>
+                <Link href='/' onClick={()=>setisMenuOpen(false)}>
+                  {siteLogoUrl ? (
+                    <Image src={siteLogoUrl} alt="ShopEasy" width={150} height={50} />
+                  ) : (
+                    textIcon || 'ShopEasy'
+                  )}
+                </Link>
             </div>
             <div className={`navbar-links ${isMenuOpen?'active':""}`}>
                 <ul>

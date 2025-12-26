@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Added useState, useEffect for localStorage
 import '@/CartStyles/OrderConfirm.css';
 import PageTitle from '@/components/PageTitle';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,9 +14,35 @@ import { clearCart } from '@/features/cart/cartSlice';
 function OrderConfirmPage() {
     const { shippingInfo, cartItems } = useSelector(state => state.cart);
     const { user } = useSelector(state => state.user);
+
+    // Load payment settings from localStorage
+    const [paymentSettings, setPaymentSettings] = useState({
+        taxPercentage: 0,
+        insideDhakaShippingCost: 0,
+        outsideDhakaShippingCost: 0,
+    });
+
+    useEffect(() => {
+        const savedSettings = JSON.parse(localStorage.getItem('paymentSettings')) || {};
+        setPaymentSettings({
+            taxPercentage: savedSettings.taxPercentage || 0,
+            insideDhakaShippingCost: savedSettings.insideDhakaShippingCost || 0,
+            outsideDhakaShippingCost: savedSettings.outsideDhakaShippingCost || 0,
+        });
+    }, []);
+
+
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const tax = subtotal * 0; // Tax is 0 based on original code
-    const shippingCharges = shippingInfo.shippingMethod === 'inside' ? 80 : 120;
+    
+    // Dynamic Tax Calculation
+    const tax = subtotal * (paymentSettings.taxPercentage / 100); 
+
+    // Dynamic Shipping Charges Calculation
+    const shippingCharges = 
+        shippingInfo.shippingMethod === 'inside' 
+            ? paymentSettings.insideDhakaShippingCost 
+            : paymentSettings.outsideDhakaShippingCost;
+
     const total = subtotal + tax + shippingCharges;
 
     const router = useRouter();
@@ -97,10 +123,10 @@ function OrderConfirmPage() {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>TK {subtotal}</td>
-                                <td>TK {shippingCharges}</td>
-                                <td>TK {tax}</td>
-                                <td>TK {total}</td>                            </tr>
+                                <td>TK {subtotal.toFixed(2)}</td>
+                                <td>TK {shippingCharges.toFixed(2)}</td>
+                                <td>TK {tax.toFixed(2)}</td>
+                                <td>TK {total.toFixed(2)}</td>                            </tr>
                         </tbody>
                     </table>
                 </div>

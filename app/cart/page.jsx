@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect for localStorage
 import '@/componentStyles/Cart.css';
 import PageTitle from '@/components/PageTitle';
 import Footer from '@/components/Footer';
@@ -16,10 +16,34 @@ function CartPage() {
     const dispatch = useDispatch();
     const [shippingMethod, setShippingMethod] = useState(shippingInfo.shippingMethod || "inside");
 
+    // Load payment settings from localStorage
+    const [paymentSettings, setPaymentSettings] = useState({
+        taxPercentage: 0,
+        insideDhakaShippingCost: 0,
+        outsideDhakaShippingCost: 0,
+    });
+
+    useEffect(() => {
+        const savedSettings = JSON.parse(localStorage.getItem('paymentSettings')) || {};
+        setPaymentSettings({
+            taxPercentage: savedSettings.taxPercentage || 0,
+            insideDhakaShippingCost: savedSettings.insideDhakaShippingCost || 0,
+            outsideDhakaShippingCost: savedSettings.outsideDhakaShippingCost || 0,
+        });
+    }, []);
+
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const tax = subtotal * 0; // Tax is 0 based on original code
-    const shippingCharges = shippingMethod === "inside" ? 70 : 85;
-    const total = subtotal + tax + shippingCharges;
+    
+    // Dynamic Tax Calculation
+    const tax = subtotal * (paymentSettings.taxPercentage / 100); 
+
+    // Dynamic Shipping Charges Calculation
+    const currentShippingCharges = 
+        shippingMethod === "inside" 
+            ? paymentSettings.insideDhakaShippingCost 
+            : paymentSettings.outsideDhakaShippingCost;
+
+    const total = subtotal + tax + currentShippingCharges;
 
     const router = useRouter();
     const checkoutHandler = () => {
@@ -71,7 +95,7 @@ function CartPage() {
                                     checked={shippingMethod === "inside"}
                                     onChange={() => setShippingMethod("inside")}
                                 />
-                                <label htmlFor="inside">Inside Dhaka (70 TK)</label>
+                                <label htmlFor="inside">Inside Dhaka (TK {paymentSettings.insideDhakaShippingCost.toFixed(2)})</label>
                             </div>
                             <div className='shipping-item'>
                                 <input
@@ -82,26 +106,26 @@ function CartPage() {
                                     checked={shippingMethod === "outside"}
                                     onChange={() => setShippingMethod("outside")}
                                 />
-                                <label htmlFor="outside">Outside Dhaka (85 TK)</label>
+                                <label htmlFor="outside">Outside Dhaka (TK {paymentSettings.outsideDhakaShippingCost.toFixed(2)})</label>
                             </div>
                         </div>
                     </div>
                         <h3 className="price-summary-header">Price Summary</h3>
                         <div className="summary-item">
                             <p className="summary-label">Subtotal</p>
-                            <p className="summary-label">TK {subtotal}</p>
+                            <p className="summary-label">TK {subtotal.toFixed(2)}</p>
                         </div>
                         <div className="summary-item">
-                            <p className="summary-label">tax(1)</p>
-                            <p className="summary-label">TK {tax}</p>
+                            <p className="summary-label">Tax ({paymentSettings.taxPercentage}%)</p>
+                            <p className="summary-label">TK {tax.toFixed(2)}</p>
                         </div>
                         <div className="summary-item">
                             <p className="summary-label">Shipping</p>
-                            <p className="summary-label">TK {shippingCharges}</p>
+                            <p className="summary-label">TK {currentShippingCharges.toFixed(2)}</p>
                         </div>
                         <div className="summary-total">
                             <p className="total-label">Total Amount</p>
-                            <p className="total-value">TK {total}</p>
+                            <p className="total-value">TK {total.toFixed(2)}</p>
                         </div>
                         <button className="checkout-btn" onClick={checkoutHandler}>Proceed To CheckOut</button>
                     </div>

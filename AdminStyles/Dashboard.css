@@ -8,73 +8,99 @@
   
   .sidebar {
     width: 270px;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-secondary, #2c3e50); /* Darker, richer tone */
     color: white;
-    padding: 20px;
+    padding: 25px 20px; /* Slightly more vertical padding */
     padding-bottom:50px;
     position: fixed;
     top: 100px; 
     height: calc(100vh - 100px); 
     overflow-y: auto; 
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
   }
   
   .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 30px;
+    gap: 12px;
+    font-size: 1.6rem; /* Slightly larger */
+    font-weight: 700; /* Bolder */
+    margin-bottom: 35px; /* More space */
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.15); /* Slightly more visible border */
   }
   
   .logo-icon {
-    font-size: 24px;
+    font-size: 26px; /* Slightly larger icon */
+    color: var(--primary-main, #3498db); /* Use primary color for icon */
   }
   
   .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px; /* More space between sections */
   }
   
   .nav-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px; /* More space between links */
   }
   .admin-link{
     margin-bottom:0;
   }
   .nav-section h3 {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.85rem;
-    margin-bottom: 5px;
+    color: rgba(255,255,255,0.8); /* Lighter for better contrast */
+    font-size: 1rem; /* Slightly larger for prominence */
+    font-weight: 700; /* Bolder */
+    margin-bottom: 12px; /* More space below heading */
+    margin-top: 20px; /* More space above section heading */
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px; /* More prominent */
+    padding-left: 5px; /* Align with links */
   }
   
   .nav-section a {
-    color: white;
+    color: rgba(255,255,255,0.85); /* Good contrast */
     text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 8px;
+    padding: 15px 18px; /* More generous padding */
+    border-radius: 12px; /* Softer edges */
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 0.95rem;
+    gap: 15px; /* More space between icon and text */
+    font-size: 1rem; /* Good font size */
+    font-weight: 500; /* Medium weight */
+    background-color: rgba(255,255,255,0.05); /* Subtle background for button-like feel */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Very subtle shadow */
   }
   
   .nav-icon {
-    font-size: 20px;
+    font-size: 22px; /* Slightly larger icon */
+    color: rgba(255,255,255,0.6); /* Slightly muted icon color for contrast */
+    transition: color 0.3s ease;
   }
   
   .nav-section a:hover {
-    background-color: rgba(255,255,255,0.1);
-    transform: translateX(5px);
-      }
+    background-color: rgba(255,255,255,0.15); /* More visible hover */
+    transform: translateY(-2px); /* Subtle lift */
+    color: white; /* Ensure text is pure white on hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* More prominent shadow on hover */
+  }
+  .nav-section a:hover .nav-icon {
+    color: white; /* Icon also pure white on hover */
+  }
+
+  .nav-section a.active-link { /* New style for active link */
+    background-color: var(--primary-main, #3498db); /* Primary color for active link */
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* More prominent shadow for active state */
+    transform: translateX(0); /* Ensure it stays flat when active */
+  }
+
+  .nav-section a.active-link .nav-icon {
+    color: white; /* White icon for active state */
+  }
   
   .main-content {
     flex: 1;
