@@ -29,7 +29,7 @@ function CartItem({item}) {
         const handleUpdate=()=>{
             if(loading) return;
             if (quantity!==item.quantity){
-                dispatch(addItemsToCart({id:item.product,quantity}));
+                dispatch(addItemsToCart({id:item.product,quantity,color: item.color})); // Pass color here
             }
         };
 useEffect(()=>{
@@ -65,6 +65,7 @@ useEffect(()=>{
                         <div className="item-details">
                             <h3 className="item-name">{item.name}</h3>
                             <p className="item-price"><strong>Price :</strong>TK {item.price.toFixed(1)}</p>
+                            {item.color && <p className="item-color"><strong>Color :</strong> {item.color}</p>} {/* Added color display */}
                             <p className="item-quantity"><strong>Quantity :</strong>{item.quantity}</p>
                         </div>
                     </div>

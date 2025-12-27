@@ -4,7 +4,7 @@ import axios from "axios";
 
 //itme add card
 
-export const addItemsToCart=createAsyncThunk('cart/addItemsToCart',async({id,quantity},{rejectWithValue})=>{
+export const addItemsToCart=createAsyncThunk('cart/addItemsToCart',async({id,quantity,color},{rejectWithValue})=>{
 try{
     const {data}=await axios.get(`/api/product/${id}`);
     if (!data.product) {
@@ -20,7 +20,8 @@ try{
         price: priceToUse,
         image: imageToUse,
         stock:data.product.stock,
-        quantity
+        quantity,
+        color
     };
     return cartItem;
 
@@ -80,13 +81,17 @@ const cartSlice=createSlice({
         .addCase(addItemsToCart.fulfilled,(state,action)=>{
             const item=action.payload
             
-            const existingItem=state.cartItems.find((i)=>i.product===item.product)
+            // Find an existing item that matches both product ID and color
+            const existingItem = state.cartItems.find(
+                (i) => i.product === item.product && i.color === item.color
+            );
+
             if(existingItem){
                 existingItem.quantity += item.quantity
-                state.message=`Updated ${item.name} quantity in the cart`
+                state.message=`Updated ${item.name} (${item.color}) quantity in the cart`
             }else{
                 state.cartItems.push(item);
-                state.message=`${item.name} is added to cart successfully`
+                state.message=`${item.name} (${item.color || 'No Color'}) is added to cart successfully`
             }
             state.loading=false,
             state.error=null,

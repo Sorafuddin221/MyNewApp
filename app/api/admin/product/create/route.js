@@ -30,11 +30,18 @@ export const POST = handleAsyncError(async (request) => {
     const subCategory = formData.get('subCategory');
     const stock = formData.get('stock');
     const imagesString = formData.get('images');
+    const colorsString = formData.get('colors'); // Get colors string
 
     // Parse the images JSON string back into an array of objects
     let images = [];
     if (imagesString) {
         images = JSON.parse(imagesString);
+    }
+
+    // Parse the colors JSON string back into an array of objects
+    let colors = [];
+    if (colorsString) {
+        colors = JSON.parse(colorsString);
     }
 
     const product = await Product.create({
@@ -46,6 +53,7 @@ export const POST = handleAsyncError(async (request) => {
         subCategory: subCategory || undefined,
         stock,
         image: images,
+        colors, // Add colors here
         user: userId, // Use the dynamically determined userId
     });
 

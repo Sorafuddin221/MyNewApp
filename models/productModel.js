@@ -47,7 +47,19 @@ image:[
             type:String,
             
         },
-        stock:{
+            colors: [
+                {
+                    name: {
+                        type: String,
+                        required: true,
+                    },
+                    hexCode: {
+                        type: String,
+                        required: true,
+                    },
+                },
+            ],
+            stock: {
             type:Number,
             required:[true,"please enter product stock"],
             max:[9999,"Stock Amount connot exceed 4 digits"],

@@ -90,6 +90,7 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Color</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,6 +102,7 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
                                     <td>{item.name}</td>
                                     <td>{item.quantity}</td>
                                     <td>{item.price}/-</td>
+                                    <td>{item.color ? item.color.name : 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>

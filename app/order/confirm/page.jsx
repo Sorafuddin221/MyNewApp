@@ -62,6 +62,7 @@ function OrderConfirmPage() {
                 quantity: item.quantity,
                 Image: item.image,
                 product: item.product,
+                color: item.color, // Add color here
             })),
             itemPrice: subtotal,
             taxPrice: tax,
@@ -100,13 +101,14 @@ function OrderConfirmPage() {
                                 <th>Image</th>
                                 <th>Product Name</th>
                                 <th>Price</th>
+                                <th>Color</th>
                                 <th>Quantity</th>
                                 <th>Total Price</th>
                             </tr>
                         </thead>
                         <tbody>
                             {cartItems.map((item) => (
-                                <tr key={item.product}><td><img src={item.image} alt={item.name} className='item-image' /></td><td>{item.name}</td><td>{item.price}</td><td>{item.quantity}</td><td>{item.quantity * item.price}</td></tr>
+                                <tr key={item.product}><td><img src={item.image} alt={item.name} className='item-image' /></td><td>{item.name}</td><td>{item.price}</td><td>{item.color || 'N/A'}</td><td>{item.quantity}</td><td>TK {(item.quantity * item.price).toFixed(2)}</td></tr>
                             ))}
                         </tbody>
 

@@ -36,6 +36,16 @@ function CreateProductPage() {
     const [editingCategoryImage, setEditingCategoryImage] = useState("");
     const [editingCategoryImagePreview, setEditingCategoryImagePreview] = useState("");
 
+    const [productColors, setProductColors] = useState(
+        Array.from({ length: 10 }, () => ({ name: '', hexCode: '' }))
+    );
+
+    const handleColorChange = (index, field, value) => {
+        const newColors = [...productColors];
+        newColors[index][field] = value;
+        setProductColors(newColors);
+    };
+
     const handleAddCategory = async () => {
         if (newCategory.trim() !== "" && newCategoryImage !== "") {
             const formData = new FormData();
@@ -132,6 +142,12 @@ function CreateProductPage() {
         myForm.set('stock', stock);
         // Send image details as JSON string
         myForm.set('images', JSON.stringify(uploadedImages)); 
+
+        // Add colors to form data
+        const selectedColors = productColors.filter(color => color.name.trim() !== '' && color.hexCode.trim() !== '');
+        if (selectedColors.length > 0) {
+            myForm.set('colors', JSON.stringify(selectedColors));
+        }
 
         // 3. Dispatch product creation with image metadata
         await dispatch(createProduct(myForm));
@@ -237,6 +253,36 @@ function CreateProductPage() {
                         ))}
                     </select>
                     <input value={stock} onChange={(e) => setStock(e.target.value)} name='stock' type="text" className="form-input" placeholder='Enter Product Stock' required />
+
+                    {/* New Color Selection Section */}
+                    <div className="color-inputs-container">
+                        <h3>Product Colors (Optional, Max 10)</h3>
+                        {productColors.map((color, index) => (
+                            <div key={index} className="color-input-group">
+                                <input
+                                    type="text"
+                                    className="form-input color-name-input"
+                                    placeholder={`Color ${index + 1} Name`}
+                                    value={color.name}
+                                    onChange={(e) => handleColorChange(index, 'name', e.target.value)}
+                                />
+                                <input
+                                    type="color"
+                                    className="color-picker"
+                                    value={color.hexCode || '#ffffff'} // Default to white if not set
+                                    onChange={(e) => handleColorChange(index, 'hexCode', e.target.value)}
+                                />
+                                {color.name && color.hexCode && ( // Show a small swatch
+                                    <div
+                                        className="color-preview-swatch"
+                                        style={{ backgroundColor: color.hexCode }}
+                                    ></div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                    {/* End Color Selection Section */}
+
                     <div className="file-input-container">
                         <input onChange={createProductImage} name='image' type="file" className="form-input-file" accept='image/*' multiple />
                     </div>

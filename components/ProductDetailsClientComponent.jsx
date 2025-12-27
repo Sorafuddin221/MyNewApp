@@ -26,6 +26,7 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
     const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(null);
     const [activeTab, setActiveTab] = useState('reviews');
+    const [selectedColor, setSelectedColor] = useState(''); // New state
 
     const { loading, error, product: reduxProduct, reviewSuccess, reviewLoading } = useSelector((state) => state.product);
     const { loading: cartLoading, error: cartError, success, message } = useSelector((state) => state.cart);
@@ -85,8 +86,12 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
             console.error("Attempted to add to cart without valid product or product ID.");
             return;
         }
-        console.log("Adding to cart: product ID being sent:", product._id);
-        dispatch(addItemsToCart({ id: product._id, quantity }));
+        if (product.colors && product.colors.length > 0 && !selectedColor) {
+            toast.error('Please select a color for the product.', { position: 'top-center', autoClose: 3000 });
+            return;
+        }
+        console.log("Adding to cart: product ID being sent:", product._id, "with color:", selectedColor);
+        dispatch(addItemsToCart({ id: product._id, quantity, color: selectedColor }));
     };
 
     const handleReviewSubmit = (e) => {
@@ -116,7 +121,11 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
         if (product && product.image && product.image.length > 0) {
             setSelectedImage(product.image[0].url);
         }
-    }, [product]);
+        // Automatically select the first color if colors are available and no color is selected
+        if (product && product.colors && product.colors.length > 0 && !selectedColor) {
+            setSelectedColor(product.colors[0].name);
+        }
+    }, [product, selectedColor]);
 
     if (loading && !initialProduct) { // Show loader only if fetching and no initialProduct is available
         return <Loader />;
@@ -247,6 +256,24 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
                                 {product.stock > 0 ? `in stock (${product.stock} available)` : 'Out of stock'}
                             </span>
                         </div>
+
+                        {product.colors && product.colors.length > 0 && (
+                            <div className="color-selection">
+                                <span className="color-label">Colors:</span>
+                                <div className="color-options">
+                                    {product.colors.map((color) => (
+                                        <div
+                                            key={color.name}
+                                            className={`color-swatch ${selectedColor === color.name ? 'selected' : ''}`}
+                                            style={{ backgroundColor: color.hexCode }}
+                                            onClick={() => setSelectedColor(color.name)}
+                                            title={color.name}
+                                        ></div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {product.stock > 0 && (<> <div className="quantity-controls">
                             <span className="quantity-label">quantity</span>
                             <button className="quantity-button" onClick={decreaseQuantity}>-</button>

@@ -233,3 +233,37 @@
         font-size: 2rem;
     }
 }
+.color-selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.color-label {
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.selected {
+    border-color: #007bff; /* Highlight color */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
