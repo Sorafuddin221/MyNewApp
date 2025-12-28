@@ -43,6 +43,78 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
         await dispatch(updateOrderStatus({ orderId, status }));
     };
 
+    const handleGeneratePackingSlip = async () => {
+        try {
+            const response = await fetch(`/api/admin/order/packing-slip/${orderId}`);
+            const contentType = response.headers.get("content-type");
+            console.log(`Packing Slip API Response Status: ${response.status}`);
+            console.log(`Packing Slip API Content-Type: ${contentType}`);
+
+            if (!response.ok) {
+                let errorMessage = `Failed to generate Packing Slip: ${response.status} ${response.statusText}`;
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    errorMessage = errorData.message || errorMessage;
+                    console.error('Server error generating Packing Slip:', errorData.stack || errorData);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Server error generating Packing Slip:', errorText);
+                }
+                toast.error(errorMessage, { position: 'top-center', autoClose: 3000 });
+                return;
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `packing-slip-${orderId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            toast.success("Packing Slip Generated", { position: 'top-center', autoClose: 3000 });
+        } catch (error) {
+            console.error('Error generating packing slip:', error);
+            toast.error(error.message || 'Failed to generate packing slip', { position: 'top-center', autoClose: 3000 });
+        }
+    };
+
+    const handleGenerateInvoice = async () => {
+        try {
+            const response = await fetch(`/api/admin/order/invoice/${orderId}`);
+            const contentType = response.headers.get("content-type");
+            console.log(`Invoice API Response Status: ${response.status}`);
+            console.log(`Invoice API Content-Type: ${contentType}`);
+
+            if (!response.ok) {
+                let errorMessage = `Failed to generate Invoice: ${response.status} ${response.statusText}`;
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    errorMessage = errorData.message || errorMessage;
+                    console.error('Server error generating Invoice:', errorData.stack || errorData);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Server error generating Invoice:', errorText);
+                }
+                toast.error(errorMessage, { position: 'top-center', autoClose: 3000 });
+                return;
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `invoice-${orderId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            toast.success("Invoice Generated", { position: 'top-center', autoClose: 3000 });
+        } catch (error) {
+            console.error('Error generating invoice:', error);
+            toast.error(error.message || 'Failed to generate invoice', { position: 'top-center', autoClose: 3000 });
+        }
+    };
+
     useEffect(() => {
         if (orderError) {
             toast.error(orderError, { position: 'top-center', autoClose: 3000 });
@@ -72,13 +144,16 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
                 <div className="order-details">
                     <h2>order Information</h2>
                     <p><strong>Order ID :</strong>{orderId}</p>
-                    <p><strong>Shipping Address :</strong>{shippingInfo.address},{shippingInfo.city},{shippingInfo.state}
+                    <p><strong>Shipping Address :</strong>{shippingInfo.address},{shippingInfo.city},{shippingInfo.state }
                         {shippingInfo.Country},{shippingInfo.pinCode}</p>
                     <p><strong>Phone :</strong>{shippingInfo.phoneNo}</p>
                     <p><strong>Order Status :</strong>{finalOrderStatus}</p>
                     <p><strong>Payment Status :</strong>{paymentStatus}</p>
                     <p><strong>total Price :</strong>{totalPrice}</p>
-
+                    <div className="pdf-actions">
+                        <button onClick={handleGeneratePackingSlip} className="update-button">Generate Packing Slip</button>
+                        <button onClick={handleGenerateInvoice} className="update-button">Generate Invoice</button>
+                    </div>
                 </div>
                 <div className="order-items">
                     <h2>Order Items</h2>
@@ -102,7 +177,7 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
                                     <td>{item.name}</td>
                                     <td>{item.quantity}</td>
                                     <td>{item.price}/-</td>
-                                    <td>{item.color ? item.color.name : 'N/A'}</td>
+                                    <td>{item.color || 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -125,3 +200,4 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
 }
 
 export default UpdateOrderPage;
+

@@ -6,9 +6,11 @@ import handleAsyncError from '@/middleware/handleAsyncError';
 
 // Get settings
 export const GET = handleAsyncError(async () => {
+  console.log('API: Attempting to connect to database for settings...');
   await db(); // Call the connectMongoDatabase function directly
+  console.log('API: Database connected for settings. Attempting to fetch settings...');
   const settings = await Settings.findOne({});
-  // No explicit disconnect needed here as connection is cached
+    // No explicit disconnect needed here as connection is cached
   return NextResponse.json(settings);
 });
 

@@ -41,6 +41,10 @@ const orderSchema=new mongoose.Schema({
             type:Number,
             required:true
         },
+        color:{
+            type:String,
+            required:true
+        },
         Image:{
             type:String,
             required:true
