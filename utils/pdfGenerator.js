@@ -6,10 +6,15 @@ import { getInvoiceHTML } from './invoiceTemplate';
 async function generatePdf(htmlContent) {
     let browser;
     try {
-        browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process']
+        const chromium = require('chrome-aws-lambda'); // Import chrome-aws-lambda
+
+        browser = await chromium.puppeteer.launch({ // Use chromium.puppeteer
+            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'], // Add necessary args
+            executablePath: await chromium.executablePath, // Set executablePath
+            headless: chromium.headless, // Use chromium.headless
+            ignoreHTTPSErrors: true,
         });
+
         const page = await browser.newPage();
         await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
         const pdfBuffer = await page.pdf({
