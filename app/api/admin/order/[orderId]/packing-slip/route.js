@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Order from '@/models/orderModel'; // Assuming this is the correct path to your order model
+import Settings from '@/models/settingsModel';
 import { generatePackingSlipPdf } from '@/utils/pdfGenerator';
 
 export async function GET(request, { params }) {
@@ -8,13 +9,14 @@ export async function GET(request, { params }) {
     const { orderId } = params;
 
     try {
-        const order = await Order.findById(orderId).populate('orderItems.product');
+        const order = await Order.findById(orderId).populate('orderItems.product').populate('user');
+        const settings = await Settings.findOne({});
 
         if (!order) {
             return NextResponse.json({ message: 'Order not found' }, { status: 404 });
         }
 
-        const pdfBuffer = await generatePackingSlipPdf(order);
+        const pdfBuffer = await generatePackingSlipPdf(order, settings);
 
         const headers = new Headers();
         headers.set('Content-Type', 'application/pdf');

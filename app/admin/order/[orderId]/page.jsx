@@ -143,6 +143,7 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
                 <h1 className="order-title">Update Order</h1>
                 <div className="order-details">
                     <h2>order Information</h2>
+                    <p><strong>Customer Name :</strong>{adminOrder.user?.name}</p>
                     <p><strong>Order ID :</strong>{orderId}</p>
                     <p><strong>Shipping Address :</strong>{shippingInfo.address},{shippingInfo.city},{shippingInfo.state }
                         {shippingInfo.Country},{shippingInfo.pinCode}</p>
