@@ -3,6 +3,7 @@ import db from '@/lib/db';
 import Settings from '@/models/settingsModel';
 import { verifyUserAuth } from '@/middleware/auth';
 import handleAsyncError from '@/middleware/handleAsyncError';
+import { revalidatePath } from 'next/cache';
 
 // Get settings
 export const GET = handleAsyncError(async () => {
@@ -41,6 +42,7 @@ export const POST = handleAsyncError(async (req) => {
   }
 
   await settings.save();
+  revalidatePath('/'); // Revalidate the root path to reflect updated settings
   // No explicit disconnect needed here as connection is cached
   return NextResponse.json({ message: 'Settings updated successfully', settings });
 });
