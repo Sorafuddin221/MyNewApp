@@ -82,18 +82,31 @@ function CreateOfferCardClientComponent() {
 
     const newOfferCard = { imageUrl: finalImageUrl, title, description, buttonUrl, displayLocation }; // Include displayLocation
 
-    const existingOfferCards = JSON.parse(localStorage.getItem('offerCards')) || [];
-    const updatedOfferCards = [...existingOfferCards, newOfferCard];
-    localStorage.setItem('offerCards', JSON.stringify(updatedOfferCards));
+    try {
+      const response = await fetch('/api/offer-cards', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newOfferCard),
+      });
 
-    toast.success('Offer card added successfully!');
-    setImageUrl('');
-    setTitle('');
-    setDescription('');
-    setButtonUrl('');
-    setDisplayLocation('none'); // Reset display location
-    setImageFile(null);
-    setImagePreview('');
+      if (!response.ok) {
+        throw new Error('Failed to save offer card');
+      }
+
+      toast.success('Offer card added successfully!');
+      setImageUrl('');
+      setTitle('');
+      setDescription('');
+      setButtonUrl('');
+      setDisplayLocation('none'); // Reset display location
+      setImageFile(null);
+      setImagePreview('');
+    } catch (error) {
+      console.error('Error saving offer card:', error);
+      toast.error('Error saving offer card.');
+    }
   };
 
   return (

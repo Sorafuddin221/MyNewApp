@@ -80,15 +80,28 @@ function CreateOfferClientComponent() {
 
     const newOffer = { imageUrl: finalImageUrl, buttonUrl };
 
-    const existingOffers = JSON.parse(localStorage.getItem('specialOffers')) || [];
-    const updatedOffers = [...existingOffers, newOffer];
-    localStorage.setItem('specialOffers', JSON.stringify(updatedOffers));
+    try {
+      const response = await fetch('/api/special-offers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newOffer),
+      });
 
-    toast.success('Special offer added successfully!');
-    setImageUrl('');
-    setButtonUrl('');
-    setImageFile(null);
-    setImagePreview('');
+      if (!response.ok) {
+        throw new Error('Failed to save special offer');
+      }
+
+      toast.success('Special offer added successfully!');
+      setImageUrl('');
+      setButtonUrl('');
+      setImageFile(null);
+      setImagePreview('');
+    } catch (error) {
+      console.error('Error saving special offer:', error);
+      toast.error('Error saving special offer.');
+    }
   };
 
   return (

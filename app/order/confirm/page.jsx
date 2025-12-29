@@ -21,14 +21,25 @@ function OrderConfirmPage() {
         insideDhakaShippingCost: 0,
         outsideDhakaShippingCost: 0,
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const savedSettings = JSON.parse(localStorage.getItem('paymentSettings')) || {};
-        setPaymentSettings({
-            taxPercentage: savedSettings.taxPercentage || 0,
-            insideDhakaShippingCost: savedSettings.insideDhakaShippingCost || 0,
-            outsideDhakaShippingCost: savedSettings.outsideDhakaShippingCost || 0,
-        });
+        const fetchPaymentSettings = async () => {
+            try {
+                const res = await fetch('/api/payment-settings');
+                const data = await res.json();
+                setPaymentSettings({
+                    taxPercentage: data.taxPercentage || 0,
+                    insideDhakaShippingCost: data.insideDhakaShippingCost || 0,
+                    outsideDhakaShippingCost: data.outsideDhakaShippingCost || 0,
+                });
+            } catch (error) {
+                toast.error("Error fetching payment settings");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPaymentSettings();
     }, []);
 
 
@@ -124,15 +135,24 @@ function OrderConfirmPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>TK {subtotal.toFixed(2)}</td>
-                                <td>TK {shippingCharges.toFixed(2)}</td>
-                                <td>TK {tax.toFixed(2)}</td>
-                                <td>TK {total.toFixed(2)}</td>                            </tr>
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="4">Loading...</td>
+                                </tr>
+                            ) : (
+                                <tr>
+                                    <td>TK {subtotal.toFixed(2)}</td>
+                                    <td>TK {shippingCharges.toFixed(2)}</td>
+                                    <td>TK {tax.toFixed(2)}</td>
+                                    <td>TK {total.toFixed(2)}</td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
-                <button className="proceed-button" onClick={proceedToPayment}>Proceed to Payment</button>
+                <button className="proceed-button" onClick={proceedToPayment} disabled={loading}>
+                    {loading ? 'Loading...' : 'Proceed to Payment'}
+                </button>
             </div>
         </>
     );

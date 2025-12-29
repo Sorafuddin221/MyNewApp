@@ -17,8 +17,24 @@ const ProductsClientComponent = ({ products, totalPages, currentPage, keyword, c
     const [offerCards, setOfferCards] = useState([]);
 
     useEffect(() => {
-        const savedOfferCards = JSON.parse(localStorage.getItem('offerCards')) || [];
-        setOfferCards(savedOfferCards);
+        const fetchOfferCards = async () => {
+            try {
+                const response = await fetch('/api/offer-cards');
+                if (response.ok) {
+                    const data = await response.json();
+                    const filteredCards = data.filter(
+                        (card) => card.displayLocation === 'products_page_after_pagination'
+                    );
+                    setOfferCards(filteredCards);
+                } else {
+                    toast.error('Failed to fetch offer cards for products page.');
+                }
+            } catch (error) {
+                console.error('Error fetching offer cards for products page:', error);
+                toast.error('Error fetching offer cards for products page.');
+            }
+        };
+        fetchOfferCards();
     }, []);
 
     const productsPageOfferCards = offerCards.filter(
@@ -77,11 +93,7 @@ const ProductsClientComponent = ({ products, totalPages, currentPage, keyword, c
             {/* Dynamic Offer Cards for Products Page */}
             {productsPageOfferCards.length > 0 && (
                 <section className="offer-section dynamic-products-page-offers">
-                    {productsPageOfferCards.length > 1 ? (
-                        <RotatingOfferCards cards={productsPageOfferCards} />
-                    ) : (
-                        <OfferCardDisplay card={productsPageOfferCards[0]} />
-                    )}
+                    <RotatingOfferCards cards={productsPageOfferCards} />
                 </section>
             )}
         </div>

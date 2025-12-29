@@ -33,7 +33,6 @@ function MyOrdersPage() {
         if (isDeleted) {
             toast.success('Order Deleted Successfully', { position: 'top-center', autoClose: 3000 });
             dispatch(removeIsDeleted());
-            dispatch(getAllMyOrders());
         }
     }, [dispatch, error, isDeleted]);
 

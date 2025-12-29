@@ -13,13 +13,28 @@ import { clearCart } from '@/features/cart/cartSlice';
 
 function PaymentPage() {
     const orderData = typeof window !== 'undefined' && sessionStorage.getItem('orderData') ? JSON.parse(sessionStorage.getItem('orderData')) : null;
+
+    // Filter orderData to only send necessary information to the backend for order creation
+    const filteredOrderData = orderData ? {
+        shippingInfo: orderData.shippingInfo,
+        orderItems: orderData.orderItems.map(item => ({
+            product: item.product,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            Image: item.Image,
+            color: item.color,
+        })),
+        paymentInfo: orderData.paymentInfo,
+    } : null;
+
     const { user } = useSelector(state => state.user);
     const router = useRouter();
     const dispatch = useDispatch();
     const [paymentMethod, setPaymentMethod] = useState('cod');
 
     const completePayment = async () => {
-        if (!orderData) {
+        if (!filteredOrderData) {
             toast.error('No order data found. Please confirm your order again.', { position: 'top-center', autoClose: 3000 });
             router.push('/order/confirm'); // Redirect back to confirm page
             return;
@@ -27,7 +42,7 @@ function PaymentPage() {
 
         if (paymentMethod === 'cod') {
             try {
-                const resultAction = await dispatch(createOrder(orderData));
+                const resultAction = await dispatch(createOrder(filteredOrderData));
                 if (createOrder.fulfilled.match(resultAction)) {
                     toast.success('Order Confirmed (COD)!', { position: 'top-center', autoClose: 3000 });
                     dispatch(clearCart());

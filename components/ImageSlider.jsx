@@ -16,11 +16,21 @@ function ImageSlider() {
   const sliderRef = useRef(null);
 
   useEffect(() => {
-    // Load slides from localStorage
-    const savedSlides = JSON.parse(localStorage.getItem('adminSlides'));
-    if (savedSlides && savedSlides.length > 0) {
-      setSlides(savedSlides);
-    }
+    const fetchSlides = async () => {
+      try {
+        const response = await fetch('/api/slides');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setSlides(data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching slides:', error);
+      }
+    };
+
+    fetchSlides();
   }, []);
 
   // Create extended slides for infinite loop effect

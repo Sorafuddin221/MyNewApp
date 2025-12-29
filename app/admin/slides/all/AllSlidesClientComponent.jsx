@@ -10,16 +10,38 @@ function AllSlidesClientComponent() {
     loadSlides();
   }, []);
 
-  const loadSlides = () => {
-    const savedSlides = JSON.parse(localStorage.getItem('adminSlides')) || [];
-    setSlides(savedSlides);
+  const loadSlides = async () => {
+    try {
+      const response = await fetch('/api/slides');
+      if (response.ok) {
+        const data = await response.json();
+        setSlides(data);
+      } else {
+        toast.error('Failed to fetch slides.');
+      }
+    } catch (error) {
+      console.error('Error fetching slides:', error);
+      toast.error('Error fetching slides.');
+    }
   };
 
-  const handleDelete = (indexToDelete) => {
-    const updatedSlides = slides.filter((_, index) => index !== indexToDelete);
-    localStorage.setItem('adminSlides', JSON.stringify(updatedSlides));
-    setSlides(updatedSlides);
-    toast.success('Slide deleted successfully!');
+  const handleDelete = async (idToDelete) => {
+    try {
+      const response = await fetch(`/api/slides/${idToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast.success('Slide deleted successfully!');
+        loadSlides(); // Reload slides after successful deletion
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to delete slide.');
+      }
+    } catch (error) {
+      console.error('Error deleting slide:', error);
+      toast.error('Error deleting slide.');
+    }
   };
 
   return (

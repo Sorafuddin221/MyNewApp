@@ -80,15 +80,28 @@ function CreateSlideClientComponent() {
 
     const newSlide = { imageUrl: finalImageUrl, buttonUrl };
 
-    const existingSlides = JSON.parse(localStorage.getItem('adminSlides')) || [];
-    const updatedSlides = [...existingSlides, newSlide];
-    localStorage.setItem('adminSlides', JSON.stringify(updatedSlides));
+    try {
+      const response = await fetch('/api/slides', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSlide),
+      });
 
-    toast.success('Slide added successfully!');
-    setImageUrl('');
-    setButtonUrl('');
-    setImageFile(null);
-    setImagePreview('');
+      if (!response.ok) {
+        throw new Error('Failed to save slide');
+      }
+
+      toast.success('Slide added successfully!');
+      setImageUrl('');
+      setButtonUrl('');
+      setImageFile(null);
+      setImagePreview('');
+    } catch (error) {
+      console.error('Error saving slide:', error);
+      toast.error('Error saving slide.');
+    }
   };
 
   return (

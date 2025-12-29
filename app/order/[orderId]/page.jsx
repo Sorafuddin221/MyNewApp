@@ -16,22 +16,15 @@ function OrderDetailsPage({ params }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(getOrderDetails(orderId));
+    }, [dispatch, orderId]);
+
+    useEffect(() => {
         if (error) {
             toast.error(error, { position: 'top-center', autoClose: 3000 });
             dispatch(removeErrors());
         }
-        dispatch(getOrderDetails(orderId));
-    }, [dispatch, error, orderId]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            dispatch(getOrderDetails(orderId));
-        }, 5000); // Poll every 5 seconds
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [dispatch, orderId]);
+    }, [dispatch, error]);
 
     const {
         shippingInfo = {},
@@ -85,6 +78,10 @@ function OrderDetailsPage({ params }) {
                     <div className="table-responsive">
                         <table className="table-main">
                             <tbody>
+                                <tr className="table-row">
+                                    <th className="table-cell">Name :-</th>
+                                    <td className="table-cell">{order.user?.name}</td>
+                                </tr>
                                 <tr className="table-row">
                                     <th className="table-cell">Address :-</th>
                                     <td className="table-cell">{shippingInfo.address},{shippingInfo.city},{shippingInfo.state},{shippingInfo.pinCode}</td>

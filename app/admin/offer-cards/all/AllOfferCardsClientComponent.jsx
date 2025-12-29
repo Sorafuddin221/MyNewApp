@@ -10,16 +10,38 @@ function AllOfferCardsClientComponent() {
     loadOfferCards();
   }, []);
 
-  const loadOfferCards = () => {
-    const savedOfferCards = JSON.parse(localStorage.getItem('offerCards')) || [];
-    setOfferCards(savedOfferCards);
+  const loadOfferCards = async () => {
+    try {
+      const response = await fetch('/api/offer-cards');
+      if (response.ok) {
+        const data = await response.json();
+        setOfferCards(data);
+      } else {
+        toast.error('Failed to fetch offer cards.');
+      }
+    } catch (error) {
+      console.error('Error fetching offer cards:', error);
+      toast.error('Error fetching offer cards.');
+    }
   };
 
-  const handleDelete = (indexToDelete) => {
-    const updatedOfferCards = offerCards.filter((_, index) => index !== indexToDelete);
-    localStorage.setItem('offerCards', JSON.stringify(updatedOfferCards));
-    setOfferCards(updatedOfferCards);
-    toast.success('Offer card deleted successfully!');
+  const handleDelete = async (idToDelete) => {
+    try {
+      const response = await fetch(`/api/offer-cards/${idToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast.success('Offer card deleted successfully!');
+        loadOfferCards(); // Reload offer cards after successful deletion
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to delete offer card.');
+      }
+    } catch (error) {
+      console.error('Error deleting offer card:', error);
+      toast.error('Error deleting offer card.');
+    }
   };
 
   return (
@@ -39,7 +61,7 @@ function AllOfferCardsClientComponent() {
               <p><strong>Display Location:</strong> {card.displayLocation || 'N/A'}</p>
               <button
                 type="button"
-                onClick={() => handleDelete(index)}
+                onClick={() => handleDelete(card._id)}
                 className="remove-btn"
               >
                 Delete Offer Card

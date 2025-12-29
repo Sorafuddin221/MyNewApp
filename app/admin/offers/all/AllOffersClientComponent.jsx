@@ -10,16 +10,38 @@ function AllOffersClientComponent() {
     loadOffers();
   }, []);
 
-  const loadOffers = () => {
-    const savedOffers = JSON.parse(localStorage.getItem('specialOffers')) || [];
-    setOffers(savedOffers);
+  const loadOffers = async () => {
+    try {
+      const response = await fetch('/api/special-offers');
+      if (response.ok) {
+        const data = await response.json();
+        setOffers(data);
+      } else {
+        toast.error('Failed to fetch special offers.');
+      }
+    } catch (error) {
+      console.error('Error fetching special offers:', error);
+      toast.error('Error fetching special offers.');
+    }
   };
 
-  const handleDelete = (indexToDelete) => {
-    const updatedOffers = offers.filter((_, index) => index !== indexToDelete);
-    localStorage.setItem('specialOffers', JSON.stringify(updatedOffers));
-    setOffers(updatedOffers);
-    toast.success('Special offer deleted successfully!');
+  const handleDelete = async (idToDelete) => {
+    try {
+      const response = await fetch(`/api/special-offers/${idToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast.success('Special offer deleted successfully!');
+        loadOffers(); // Reload offers after successful deletion
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to delete special offer.');
+      }
+    } catch (error) {
+      console.error('Error deleting special offer:', error);
+      toast.error('Error deleting special offer.');
+    }
   };
 
   return (

@@ -19,8 +19,8 @@ const uploadToCloudinary = (buffer, folder) => {
   });
 };
 
-export const POST = handleAsyncError(async (req) => {
-  const formData = await req.formData();
+export const POST = handleAsyncError(async (request) => {
+  const formData = await request.formData();
   const file = formData.get('image');
 
   if (!file) {

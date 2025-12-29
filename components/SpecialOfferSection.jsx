@@ -7,11 +7,21 @@ function SpecialOfferSection() {
   const [currentOfferIndex, setCurrentOfferIndex] = useState(0);
 
   useEffect(() => {
-    // Load offers from localStorage
-    const savedOffers = localStorage.getItem('specialOffers');
-    if (savedOffers) {
-      setOffers(JSON.parse(savedOffers));
-    }
+    const fetchOffers = async () => {
+      try {
+        const response = await fetch('/api/special-offers');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setOffers(data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching special offers:', error);
+      }
+    };
+
+    fetchOffers();
   }, []);
 
   useEffect(() => {

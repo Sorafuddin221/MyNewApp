@@ -22,14 +22,24 @@ function CartPage() {
         insideDhakaShippingCost: 0,
         outsideDhakaShippingCost: 0,
     });
-
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        const savedSettings = JSON.parse(localStorage.getItem('paymentSettings')) || {};
-        setPaymentSettings({
-            taxPercentage: savedSettings.taxPercentage || 0,
-            insideDhakaShippingCost: savedSettings.insideDhakaShippingCost || 0,
-            outsideDhakaShippingCost: savedSettings.outsideDhakaShippingCost || 0,
-        });
+        const fetchPaymentSettings = async () => {
+            try {
+                const res = await fetch('/api/payment-settings');
+                const data = await res.json();
+                setPaymentSettings({
+                    taxPercentage: data.taxPercentage || 0,
+                    insideDhakaShippingCost: data.insideDhakaShippingCost || 0,
+                    outsideDhakaShippingCost: data.outsideDhakaShippingCost || 0,
+                });
+            } catch (error) {
+                toast.error("Error fetching payment settings");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPaymentSettings();
     }, []);
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -90,50 +100,56 @@ function CartPage() {
                     </div>
                     <div className="price-summary">
                         <div className='shipping-page'>
-                        <div className=" shipping-summary">
-                            <h3 className="price-summary-header">Shipping Zone</h3>
-                            <div className='shipping-item'>
-                                <input
-                                    type="checkbox"
-                                    id="inside"
-                                    name="shippingMethod"
-                                    value="inside"
-                                    checked={shippingMethod === "inside"}
-                                    onChange={() => setShippingMethod("inside")}
-                                />
-                                <label htmlFor="inside">Inside Dhaka (TK {paymentSettings.insideDhakaShippingCost.toFixed(2)})</label>
-                            </div>
-                            <div className='shipping-item'>
-                                <input
-                                    type="checkbox"
-                                    id="outside"
-                                    name="shippingMethod"
-                                    value="outside"
-                                    checked={shippingMethod === "outside"}
-                                    onChange={() => setShippingMethod("outside")}
-                                />
-                                <label htmlFor="outside">Outside Dhaka (TK {paymentSettings.outsideDhakaShippingCost.toFixed(2)})</label>
+                            <div className=" shipping-summary">
+                                <h3 className="price-summary-header">Shipping Zone</h3>
+                                {loading ? <p>Loading...</p> : <>
+                                    <div className='shipping-item'>
+                                        <input
+                                            type="checkbox"
+                                            id="inside"
+                                            name="shippingMethod"
+                                            value="inside"
+                                            checked={shippingMethod === "inside"}
+                                            onChange={() => setShippingMethod("inside")}
+                                        />
+                                        <label htmlFor="inside">Inside Dhaka (TK {paymentSettings.insideDhakaShippingCost.toFixed(2)})</label>
+                                    </div>
+                                    <div className='shipping-item'>
+                                        <input
+                                            type="checkbox"
+                                            id="outside"
+                                            name="shippingMethod"
+                                            value="outside"
+                                            checked={shippingMethod === "outside"}
+                                            onChange={() => setShippingMethod("outside")}
+                                        />
+                                        <label htmlFor="outside">Outside Dhaka (TK {paymentSettings.outsideDhakaShippingCost.toFixed(2)})</label>
+                                    </div>
+                                </>}
                             </div>
                         </div>
-                    </div>
                         <h3 className="price-summary-header">Price Summary</h3>
-                        <div className="summary-item">
-                            <p className="summary-label">Subtotal</p>
-                            <p className="summary-label">TK {subtotal.toFixed(2)}</p>
-                        </div>
-                        <div className="summary-item">
-                            <p className="summary-label">Tax ({paymentSettings.taxPercentage}%)</p>
-                            <p className="summary-label">TK {tax.toFixed(2)}</p>
-                        </div>
-                        <div className="summary-item">
-                            <p className="summary-label">Shipping</p>
-                            <p className="summary-label">TK {currentShippingCharges.toFixed(2)}</p>
-                        </div>
-                        <div className="summary-total">
-                            <p className="total-label">Total Amount</p>
-                            <p className="total-value">TK {total.toFixed(2)}</p>
-                        </div>
-                        <button className="checkout-btn" onClick={checkoutHandler}>Proceed To CheckOut</button>
+                        {loading ? <p>Loading...</p> : <>
+                            <div className="summary-item">
+                                <p className="summary-label">Subtotal</p>
+                                <p className="summary-label">TK {subtotal.toFixed(2)}</p>
+                            </div>
+                            <div className="summary-item">
+                                <p className="summary-label">Tax ({paymentSettings.taxPercentage}%)</p>
+                                <p className="summary-label">TK {tax.toFixed(2)}</p>
+                            </div>
+                            <div className="summary-item">
+                                <p className="summary-label">Shipping</p>
+                                <p className="summary-label">TK {currentShippingCharges.toFixed(2)}</p>
+                            </div>
+                            <div className="summary-total">
+                                <p className="total-label">Total Amount</p>
+                                <p className="total-value">TK {total.toFixed(2)}</p>
+                            </div>
+                        </>}
+                        <button className="checkout-btn" onClick={checkoutHandler} disabled={loading}>
+                            {loading ? 'Loading...' : 'Proceed To CheckOut'}
+                        </button>
                     </div>
                 </div>
             )}

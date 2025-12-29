@@ -9,22 +9,52 @@ function PaymentsClientComponent() {
   const [outsideDhakaShippingCost, setOutsideDhakaShippingCost] = useState(0); // New state
 
   useEffect(() => {
-    // Load settings from localStorage
-    const savedSettings = JSON.parse(localStorage.getItem('paymentSettings')) || {};
-    setTaxPercentage(savedSettings.taxPercentage || 0);
-    setInsideDhakaShippingCost(savedSettings.insideDhakaShippingCost || 0);
-    setOutsideDhakaShippingCost(savedSettings.outsideDhakaShippingCost || 0);
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/payment-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            setTaxPercentage(data.taxPercentage || 0);
+            setInsideDhakaShippingCost(data.insideDhakaShippingCost || 0);
+            setOutsideDhakaShippingCost(data.outsideDhakaShippingCost || 0);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching payment settings:', error);
+        toast.error('Error fetching payment settings.');
+      }
+    };
+
+    fetchSettings();
   }, []);
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     const newSettings = {
       taxPercentage: Number(taxPercentage),
-      insideDhakaShippingCost: Number(insideDhakaShippingCost), // Save new cost
-      outsideDhakaShippingCost: Number(outsideDhakaShippingCost), // Save new cost
+      insideDhakaShippingCost: Number(insideDhakaShippingCost),
+      outsideDhakaShippingCost: Number(outsideDhakaShippingCost),
     };
-    localStorage.setItem('paymentSettings', JSON.stringify(newSettings));
-    toast.success('Payment settings saved successfully!');
+
+    try {
+      const response = await fetch('/api/payment-settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSettings),
+      });
+
+      if (response.ok) {
+        toast.success('Payment settings saved successfully!');
+      } else {
+        throw new Error('Failed to save payment settings');
+      }
+    } catch (error) {
+      console.error('Error saving payment settings:', error);
+      toast.error('Error saving payment settings.');
+    }
   };
 
   return (

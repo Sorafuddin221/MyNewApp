@@ -46,6 +46,10 @@ function ShippingPage() {
             toast.error('Invalid Phone number ! it should be 11 Digits', { position: 'top-center', autoClose: 3000 });
             return;
         }
+        if (state && !city) {
+            toast.error('Please select your District', { position: 'top-center', autoClose: 3000 });
+            return;
+        }
         dispatch(saveShippingInfo({ address, pinCode, state, city, country, phoneNumber, shippingMethod: shippingInfo.shippingMethod }));
         router.push('/order/confirm');
     };

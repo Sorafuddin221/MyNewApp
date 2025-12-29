@@ -41,7 +41,7 @@ export const getOrderDetails=createAsyncThunk('order/getOrderDetails',async(orde
 export const deleteMyOrder=createAsyncThunk('order/deleteMyOrder',async(orderID,{rejectWithValue})=>{
     try{
         const {data}=await axios.delete(`/api/order/${orderID}`)
-        return data;
+        return { orderID, ...data };
     }catch(error){
         return rejectWithValue(error.response?.data || 'Failed to delete order')
     }
@@ -122,9 +122,9 @@ const orderSlice=createSlice({
             state.error=null
         })
         .addCase(deleteMyOrder.fulfilled,(state,action)=>{
-            state.loading=false,
-            state.isDeleted=action.payload.success
-
+            state.loading=false;
+            state.isDeleted=action.payload.success;
+            state.orders = state.orders.filter(order => order._id !== action.payload.orderID);
         })
         .addCase(deleteMyOrder.rejected,(state,action)=>{
             state.loading=false,
