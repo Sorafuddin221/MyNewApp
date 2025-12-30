@@ -1,19 +1,45 @@
 
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { getPackingSlipHTML } from './packingSlipTemplate';
 import { getInvoiceHTML } from './invoiceTemplate';
 
 async function generatePdf(htmlContent) {
     let browser;
-    try {
-        const chromium = require('chrome-aws-lambda'); // Import chrome-aws-lambda
 
-        browser = await chromium.puppeteer.launch({ // Use chromium.puppeteer
-            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'], // Add necessary args
-            executablePath: await chromium.executablePath, // Set executablePath
-            headless: chromium.headless, // Use chromium.headless
+    const getLaunchOptions = async () => {
+        // For local development, use the installed Chrome browser.
+        if (process.env.NODE_ENV === 'development') {
+            const fs = require('fs');
+            const windowsPaths = [
+                'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+                'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+            ];
+
+            for (const path of windowsPaths) {
+                if (fs.existsSync(path)) {
+                    return {
+                        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                        executablePath: path,
+                        headless: true,
+                    };
+                }
+            }
+        }
+        
+        // For production or if local chrome is not found, use the serverless-optimized chromium.
+        return {
+            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath(),
+            headless: chromium.headless,
             ignoreHTTPSErrors: true,
-        });
+        };
+    };
+
+    try {
+        const options = await getLaunchOptions();
+        browser = await puppeteer.launch(options);
 
         const page = await browser.newPage();
         await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
