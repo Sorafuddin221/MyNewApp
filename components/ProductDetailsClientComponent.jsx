@@ -121,11 +121,7 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
         if (product && product.image && product.image.length > 0) {
             setSelectedImage(product.image[0].url);
         }
-        // Automatically select the first color if colors are available and no color is selected
-        if (product && product.colors && product.colors.length > 0 && !selectedColor) {
-            setSelectedColor(product.colors[0].name);
-        }
-    }, [product, selectedColor]);
+    }, [product]);
 
     if (loading && !initialProduct) { // Show loader only if fetching and no initialProduct is available
         return <Loader />;

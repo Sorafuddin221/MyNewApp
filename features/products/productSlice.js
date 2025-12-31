@@ -1,5 +1,5 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '@/utils/api';
 
 
 
@@ -15,7 +15,7 @@ export const getProduct=createAsyncThunk('product/getProduct',async({keyword,pag
         }
         // const link=keyword?`/api/v1/products?keyword=${encodeURIComponent(keyword)}& page-${page}`:`/api/v1/products?page=${page}`;
         
-        const {data}=await axios.get(link)
+        const {data}=await api.get(link)
         console.log('Response',data);
         return data;
 
@@ -26,7 +26,7 @@ export const getProduct=createAsyncThunk('product/getProduct',async({keyword,pag
 
 export const getTrending=createAsyncThunk('product/getTrending',async(_,{rejectWithValue})=>{
     try{
-        const {data}=await axios.get('/api/products/trending')
+        const {data}=await api.get('/api/products/trending')
         return data;
 
     }catch(error){
@@ -39,7 +39,7 @@ export const getTrending=createAsyncThunk('product/getTrending',async(_,{rejectW
 export const getProductDetails=createAsyncThunk('product/getProductDetails',async(id,{rejectWithValue})=>{
     try{
         const link=`/api/product/${id}`;
-        const {data}=await axios.get(link);
+        const {data}=await api.get(link);
         
         return data;
 
@@ -57,7 +57,7 @@ export const createReview=createAsyncThunk('product/createReview',async(reviewDa
             }
         }
      
-        const {data}=await axios.put('/api/review',reviewData,config);
+        const {data}=await api.put('/api/review',reviewData,config);
         return data;
 
     }catch(error){
@@ -73,7 +73,7 @@ export const askQuestion = createAsyncThunk('product/askQuestion', async (questi
                 'Content-Type': 'application/json'
             }
         }
-        const { data } = await axios.post('/api/product/query', questionData, config);
+        const { data } = await api.post('/api/product/query', questionData, config);
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');
@@ -88,7 +88,7 @@ export const answerQuestion = createAsyncThunk('product/answerQuestion', async (
                 'Content-Type': 'application/json'
             }
         }
-        const { data } = await axios.put('/api/admin/query', answerData, config);
+        const { data } = await api.put('/api/admin/query', answerData, config);
         return data;
     } catch (error) {
         return rejectWithValue(error.response?.data || 'An error occurred');

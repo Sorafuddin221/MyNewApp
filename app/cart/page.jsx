@@ -59,6 +59,13 @@ function CartPage() {
 
     const router = useRouter();
     const checkoutHandler = () => {
+        // Check for missing color selection
+        const itemMissingColor = cartItems.find(item => Array.isArray(item.colors) && item.colors.length > 0 && !item.color);
+        if (itemMissingColor) {
+            toast.error(`Please select a color for ${itemMissingColor.name}`);
+            return;
+        }
+
         if (!shippingMethod) {
             toast.error("Please select your shipping zone");
             return;

@@ -32,6 +32,20 @@ export const verifyUserAuth = async (req) => {
         };
 
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return {
+                isAuthenticated: false,
+                error: new Error('Session expired. Please log in again.'),
+                statusCode: 401
+            };
+        }
+        if (error.name === 'JsonWebTokenError') {
+            return {
+                isAuthenticated: false,
+                error: new Error('Invalid token. Please log in again.'),
+                statusCode: 401
+            };
+        }
         return {
             isAuthenticated: false,
             error: error,

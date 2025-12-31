@@ -1,5 +1,4 @@
-
-
+import SessionTimeout from '../components/SessionTimeout';
 import "./globals.css";
 import { ReduxProvider } from "./ReduxProvider";
 import LayoutClient from "../components/LayoutClient"; // Import LayoutClient
@@ -54,6 +53,7 @@ export default async function RootLayout({ children }) {
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <ReduxProvider>
+          <SessionTimeout />
           <LayoutClient settings={settings}>{children}</LayoutClient>
           <ToastContainer />
         </ReduxProvider>

@@ -1,6 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { updateOrderStatus } from "../admin/adminSlice";
-import axios from "axios";
+import api from "@/utils/api";
 
 
 //creating order
@@ -11,7 +11,7 @@ export const createOrder=createAsyncThunk('order/createOrder',async(order,{rejec
                 'Content-Type':'application/json'
             }
         }
-        const {data}=await axios.post('/api/new/order',order,config)
+        const {data}=await api.post('/api/new/order',order,config)
         console.log('order Data',data);
         return data;
     }catch(error){
@@ -22,7 +22,7 @@ export const createOrder=createAsyncThunk('order/createOrder',async(order,{rejec
 //Get User Orders
 export const getAllMyOrders=createAsyncThunk('order/getAllMyOrders',async(_,{rejectWithValue})=>{
     try{
-        const {data}=await axios.get('/api/orders/user')
+        const {data}=await api.get('/api/orders/user')
         return data;
     }catch(error){
         return rejectWithValue(error.response?.data || 'Order Creating Failed')
@@ -31,7 +31,7 @@ export const getAllMyOrders=createAsyncThunk('order/getAllMyOrders',async(_,{rej
 //Get Order details
 export const getOrderDetails=createAsyncThunk('order/getOrderDetails',async(orderID,{rejectWithValue})=>{
     try{
-        const {data}=await axios.get(`/api/order/${orderID}`)
+        const {data}=await api.get(`/api/order/${orderID}`)
         return data;
     }catch(error){
         return rejectWithValue(error.response?.data || 'Failed to fetch order details')
@@ -40,7 +40,7 @@ export const getOrderDetails=createAsyncThunk('order/getOrderDetails',async(orde
 //Delete my order
 export const deleteMyOrder=createAsyncThunk('order/deleteMyOrder',async(orderID,{rejectWithValue})=>{
     try{
-        const {data}=await axios.delete(`/api/order/${orderID}`)
+        const {data}=await api.delete(`/api/order/${orderID}`)
         return { orderID, ...data };
     }catch(error){
         return rejectWithValue(error.response?.data || 'Failed to delete order')
