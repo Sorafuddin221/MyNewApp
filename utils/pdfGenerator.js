@@ -1,6 +1,6 @@
 
-import puppeteer from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
+import html_to_pdf from 'html-pdf-node';
 import { getPackingSlipHTML } from './packingSlipTemplate';
 import { getInvoiceHTML } from './invoiceTemplate';
 
@@ -23,105 +23,94 @@ const getWindowsChromeExecutablePath = () => {
 };
 
 async function generatePdf(htmlContent) {
-    let browser;
-    let launchOptions = {}; // Initialize as empty
+    let file = { content: htmlContent };
 
+    let pdfOptions = {
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '20px',
+            right: '20px',
+            bottom: '20px',
+            left: '20px'
+        },
+        args: [], // Will be populated with aggressive arguments
+        executablePath: '', // Will be populated from chromium.executablePath() or local Chrome
+        headless: 'new', // Default to new headless mode
+        ignoreHTTPSErrors: true,
+    };
+
+    // Determine Puppeteer launch options for html-pdf-node
     if (process.env.NODE_ENV === 'development') {
         const localChromePath = getWindowsChromeExecutablePath();
         if (localChromePath) {
-            launchOptions = {
-                args: ['--no-sandbox', '--disable-setuid-sandbox'],
-                executablePath: localChromePath,
-                headless: true,
-            };
+            pdfOptions.executablePath = localChromePath;
+            pdfOptions.args = ['--no-sandbox', '--disable-setuid-sandbox'];
+            pdfOptions.headless = true; // Use boolean headless for local
         } else {
             console.log('Local Chrome not found, falling back to @sparticuz/chromium for development.');
-            launchOptions = {
-                args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', '--disable-dev-shm-usage'],
-                defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath(),
-                headless: chromium.headless,
-                ignoreHTTPSErrors: true,
-            };
+            pdfOptions.args = [...chromium.args, '--hide-scrollbars', '--disable-web-security', '--disable-dev-shm-usage'];
+            pdfOptions.executablePath = await chromium.executablePath();
+            pdfOptions.headless = chromium.headless;
         }
     } else { // Production or other non-development environments (like Vercel)
-        launchOptions = {
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--single-process',
-                '--no-zygote',
-                '--disable-gpu',
-                '--hide-scrollbars',
-                '--disable-web-security',
-                '--disable-dev-shm-usage',
-                '--disable-features=site-per-process',
-                '--disable-speech-api',
-                '--disable-webrtc',
-                '--disable-breakpad',
-                '--disable-client-side-phishing-detection',
-                '--disable-cast',
-                '--disable-cloud-import',
-                '--disable-popup-blocking',
-                '--disable-session-crashed-bubble',
-                '--disable-component-update',
-                '--disable-default-apps',
-                '--disable-domain-reliability',
-                '--disable-field-trial-config',
-                '--disable-hang-monitor',
-                '--disable-ipc-flooding-protection',
-                '--disable-notifications',
-                '--disable-offer-store-unmasked-wallet-cards',
-                '--disable-print-preview',
-                '--disable-reloader-for-per-site-ct-stack-filtering',
-                '--disable-tab-for-desktop-share',
-                '--disable-translate',
-                '--disable-background-networking',
-                '--disable-background-timer-throttling',
-                '--disable-backgrounding-occluded-windows',
-                '--disable-renderer-backgrounding',
-                '--disable-extensions',
-                '--disable-logging',
-                '--log-level=3',
-            ],
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            headless: 'new', // Explicitly set to 'new' headless mode
-            ignoreHTTPSErrors: true,
-        };
+        pdfOptions.args = [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--single-process',
+            '--no-zygote',
+            '--disable-gpu',
+            '--hide-scrollbars',
+            '--disable-web-security',
+            '--disable-dev-shm-usage',
+            '--disable-features=site-per-process',
+            '--disable-speech-api',
+            '--disable-webrtc',
+            '--disable-breakpad',
+            '--disable-client-side-phishing-detection',
+            '--disable-cast',
+            '--disable-cloud-import',
+            '--disable-popup-blocking',
+            '--disable-session-crashed-bubble',
+            '--disable-component-update',
+            '--disable-default-apps',
+            '--disable-domain-reliability',
+            '--disable-field-trial-config',
+            '--disable-hang-monitor',
+            '--disable-ipc-flooding-protection',
+            '--disable-notifications',
+            '--disable-offer-store-unmasked-wallet-cards',
+            '--disable-print-preview',
+            '--disable-reloader-for-per-site-ct-stack-filtering',
+            '--disable-tab-for-desktop-share',
+            '--disable-translate',
+            '--disable-background-networking',
+            '--disable-background-timer-throttling',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-renderer-backgrounding',
+            '--disable-extensions',
+            '--disable-logging',
+            '--log-level=3',
+        ];
+        pdfOptions.executablePath = await chromium.executablePath();
+        pdfOptions.headless = 'new';
     }
 
-    console.log("PDF Generator Launch Options:", {
+    // Add logging to see what html-pdf-node will use
+    console.log("PDF Generator Launch Options (html-pdf-node):", {
         nodeEnv: process.env.NODE_ENV,
         platform: process.platform,
-        executablePath: launchOptions.executablePath,
-        args: launchOptions.args,
-        headless: launchOptions.headless,
+        executablePath: pdfOptions.executablePath,
+        args: pdfOptions.args,
+        headless: pdfOptions.headless,
     });
 
     try {
-        browser = await puppeteer.launch(launchOptions);
-
-        const page = await browser.newPage();
-        await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-        const pdfBuffer = await page.pdf({
-            format: 'A4',
-            printBackground: true,
-            margin: {
-                top: '20px',
-                right: '20px',
-                bottom: '20px',
-                left: '20px'
-            }
-        });
+        const pdfBuffer = await html_to_pdf.generatePdf(file, pdfOptions);
         return pdfBuffer;
     } catch (error) {
-        console.error('Error generating PDF with Puppeteer:', error);
+        console.error('Error generating PDF with html-pdf-node:', error);
         throw new Error('Could not generate PDF.');
-    } finally {
-        if (browser) {
-            await browser.close();
-        }
     }
 }
 
