@@ -18,6 +18,7 @@ const TrendingProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [swiperInstance, setSwiperInstance] = useState(null);
 
     useEffect(() => {
         const fetchTrendingProducts = async () => {
@@ -51,11 +52,24 @@ const TrendingProducts = () => {
         );
     }
 
+    const handleMouseEnter = () => {
+        if (swiperInstance) {
+            swiperInstance.autoplay.stop();
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (swiperInstance) {
+            swiperInstance.autoplay.start();
+        }
+    };
+
     return (
         <div className="home-container">
             <h2 className="home-heading">trending new</h2>
-            <div className="home-product-container">
+            <div className="home-product-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <Swiper
+                    onSwiper={setSwiperInstance}
                     spaceBetween={30}
                     slidesPerView={1}
                     navigation={true} // Enable navigation buttons

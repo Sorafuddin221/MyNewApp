@@ -15,27 +15,25 @@ function UserDashboard({ user }) {
     const dispatch = useDispatch();
     const router = useRouter();
     const [menuVisible, setMenuVisible] = useState(false);
-    const [isClient, setIsClient] = useState(false);
-    const profileRef = useRef(null);
-    const [menuStyle, setMenuStyle] = useState({});
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    useEffect(() => {
-        if (menuVisible && profileRef.current) {
-            const rect = profileRef.current.getBoundingClientRect();
-            setMenuStyle({
-                top: `${rect.bottom + window.scrollY}px`,
-                right: `${window.innerWidth - rect.right}px`,
-            });
-        }
-    }, [menuVisible]);
+    const dashboardRef = useRef(null);
 
     function toggleMenu() {
         setMenuVisible(!menuVisible);
     }
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dashboardRef.current && !dashboardRef.current.contains(event.target)) {
+                setMenuVisible(false);
+            }
+        }
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dashboardRef]);
 
     // Define navigation functions
     const navigateToOrders = () => {
@@ -68,7 +66,7 @@ function UserDashboard({ user }) {
     const options = [
         { name: 'Orders', funcName: navigateToOrders },
         { name: 'Account', funcName: navigateToProfile },
-        { name: `Cart (${isClient ? cartItems.length : 0})`, funcName: navigateToCart, isCart: true },
+        { name: `Cart (${cartItems.length})`, funcName: navigateToCart, isCart: true },
         { name: 'Logout', funcName: logoutUser },
     ];
 
@@ -78,19 +76,15 @@ function UserDashboard({ user }) {
         });
     }
 
-    if (!isClient) {
-        return null;
-    }
-
     return (
-        <div className="dashboard-container">
+        <div className="dashboard-container" ref={dashboardRef}>
             <div className={`overlay ${menuVisible ? 'show' : ''}`} onClick={toggleMenu}></div>
-            <div className="profile-header" onClick={toggleMenu} ref={profileRef}>
+            <div className="profile-header" onClick={toggleMenu}>
                 <img className='profile-avatar' src={user?.avatar?.url || './images/profile.png'} alt="profile-img" />
                 <span className="profile-name">{user?.name || 'User'}</span>
                 <ArrowDropDown className='profile-arrow' />
             </div>
-            {menuVisible && (<div className="menu-options" style={menuStyle}>
+            {menuVisible && (<div className="menu-options">
                 {options.map((item) => (
                     <button key={item.name} onClick={item.funcName} className={`menu-option-btn ${item.isCart ? (cartItems.length > 0 ? 'cart-not-empty' : '') : ''}`}>{item.name}</button>
                 ))}

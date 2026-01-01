@@ -35,8 +35,9 @@
 .menu-options {
     padding: 0;
     border-radius: 8px;
-    position: fixed;
-    top:100px;
+    position: absolute;
+    top: 100%;
+    right: 0;
     width: 180px;
     z-index: 9999;
     background-color: var(--bg-primary);

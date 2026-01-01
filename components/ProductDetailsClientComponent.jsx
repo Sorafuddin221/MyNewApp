@@ -30,7 +30,7 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
 
     const { loading, error, product: reduxProduct, reviewSuccess, reviewLoading } = useSelector((state) => state.product);
     const { loading: cartLoading, error: cartError, success, message } = useSelector((state) => state.cart);
-    const { user } = useSelector((state) => state.user);
+    const { user, isAuthenticated } = useSelector((state) => state.user); // Added isAuthenticated
 
     const dispatch = useDispatch();
 
@@ -81,6 +81,11 @@ function ProductDetailsClientComponent({ initialProduct, productId }) {
     };
 
     const addToCart = () => {
+        if (!isAuthenticated) { // Check for authentication
+            toast.error("Please login to your account");
+            return;
+        }
+
         if (!product || !product._id) {
             toast.error('Product information is not available. Cannot add to cart.', { position: 'top-center', autoClose: 3000 });
             console.error("Attempted to add to cart without valid product or product ID.");
