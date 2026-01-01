@@ -26,7 +26,7 @@ async function generatePdf(htmlContent) {
     let browser;
 
     let launchOptions = {
-        args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+        args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', '--disable-dev-shm-usage'],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
