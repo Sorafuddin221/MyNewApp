@@ -24,61 +24,71 @@ const getWindowsChromeExecutablePath = () => {
 
 async function generatePdf(htmlContent) {
     let browser;
-
-    let launchOptions = {
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--single-process',
-            '--no-zygote',
-            '--disable-gpu',
-            '--hide-scrollbars',
-            '--disable-web-security',
-            '--disable-dev-shm-usage',
-            '--disable-features=site-per-process',
-            '--disable-speech-api',
-            '--disable-webrtc',
-            '--disable-breakpad',
-            '--disable-client-side-phishing-detection',
-            '--disable-cast',
-            '--disable-cloud-import',
-            '--disable-popup-blocking',
-            '--disable-session-crashed-bubble',
-            '--disable-component-update',
-            '--disable-default-apps',
-            '--disable-domain-reliability',
-            '--disable-field-trial-config',
-            '--disable-hang-monitor',
-            '--disable-ipc-flooding-protection',
-            '--disable-notifications',
-            '--disable-offer-store-unmasked-wallet-cards',
-            '--disable-print-preview',
-            '--disable-reloader-for-per-site-ct-stack-filtering',
-            '--disable-tab-for-desktop-share',
-            '--disable-translate',
-            '--disable-background-networking',
-            '--disable-background-timer-throttling',
-            '--disable-backgrounding-occluded-windows',
-            '--disable-renderer-backgrounding',
-            '--disable-extensions',
-            '--disable-logging',
-            '--log-level=3',
-        ],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: 'new', // Explicitly set to 'new' headless mode
-        ignoreHTTPSErrors: true,
-    };
+    let launchOptions = {}; // Initialize as empty
 
     if (process.env.NODE_ENV === 'development') {
         const localChromePath = getWindowsChromeExecutablePath();
         if (localChromePath) {
-            launchOptions.executablePath = localChromePath;
-            launchOptions.args = ['--no-sandbox', '--disable-setuid-sandbox'];
-            launchOptions.headless = true;
+            launchOptions = {
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                executablePath: localChromePath,
+                headless: true,
+            };
         } else {
             console.log('Local Chrome not found, falling back to @sparticuz/chromium for development.');
+            launchOptions = {
+                args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', '--disable-dev-shm-usage'],
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath(),
+                headless: chromium.headless,
+                ignoreHTTPSErrors: true,
+            };
         }
+    } else { // Production or other non-development environments (like Vercel)
+        launchOptions = {
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--single-process',
+                '--no-zygote',
+                '--disable-gpu',
+                '--hide-scrollbars',
+                '--disable-web-security',
+                '--disable-dev-shm-usage',
+                '--disable-features=site-per-process',
+                '--disable-speech-api',
+                '--disable-webrtc',
+                '--disable-breakpad',
+                '--disable-client-side-phishing-detection',
+                '--disable-cast',
+                '--disable-cloud-import',
+                '--disable-popup-blocking',
+                '--disable-session-crashed-bubble',
+                '--disable-component-update',
+                '--disable-default-apps',
+                '--disable-domain-reliability',
+                '--disable-field-trial-config',
+                '--disable-hang-monitor',
+                '--disable-ipc-flooding-protection',
+                '--disable-notifications',
+                '--disable-offer-store-unmasked-wallet-cards',
+                '--disable-print-preview',
+                '--disable-reloader-for-per-site-ct-stack-filtering',
+                '--disable-tab-for-desktop-share',
+                '--disable-translate',
+                '--disable-background-networking',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding',
+                '--disable-extensions',
+                '--disable-logging',
+                '--log-level=3',
+            ],
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath(),
+            headless: 'new', // Explicitly set to 'new' headless mode
+            ignoreHTTPSErrors: true,
+        };
     }
 
     console.log("PDF Generator Launch Options:", {
