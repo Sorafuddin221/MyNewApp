@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import '@/UserStyles/Profile.css';
+import '@/UserStyles/NewProfile.css';
 import Link from 'next/link';
 
 import { useSelector } from 'react-redux';
@@ -30,30 +30,36 @@ function ProfilePage() {
 
     return (
         <>
+            <PageTitle title={`${user?.name || 'User'}'s Profile`} />
             <div className="profile-container">
-                <PageTitle title={`${user?.name || 'User'} Profile`} />
-                <div className="profile-image">
-                    <h1 className="profile-heading">My profile</h1>
-                    <img src={user?.avatar?.url || './images/profile.png'} alt="User Profile" className="profile-image" />
-                    <Link href="/profile/update">Edit Profile</Link>
-                </div>
-                <div className="profile">
-                    <div className="profile-details">
-                        <h2>Username:</h2>
-                        <p>{user?.name}</p>
+                <div className="profile-card">
+                    <div className="profile-page-header">
+                        <div className="profile-avatar-container">
+                            <img 
+                                src={user?.avatar?.url || './images/profile.png'} 
+                                alt="User Profile" 
+                                className="profile-page-avatar" 
+                            />
+                            <Link href="/profile/update" className="edit-profile-btn">
+                                Edit Profile
+                            </Link>
+                        </div>
+                        <div className="profile-info">
+                            <h1 className="profile-page-user-name">{user?.name}</h1>
+                            <p className="profile-email">{user?.email}</p>
+                            <p className="profile-joined">
+                                Joined on: {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                            </p>
+                        </div>
                     </div>
-                    <div className="profile-details">
-                        <h2>Email:</h2>
-                        <p>{user?.email}</p>
+                    <div className="profile-actions">
+                        <Link href="/orders/user" className="action-btn">
+                            My Orders
+                        </Link>
+                        <Link href="/password/update" className="action-btn">
+                            Change Password
+                        </Link>
                     </div>
-                    <div className="profile-details">
-                        <h2>Joined On:</h2>
-                        <p>{user?.createdAt ? String(user.createdAt).substring(0, 10) : 'N/A'}</p>
-                    </div>
-                </div>
-                <div className="profile-buttons">
-                    <Link href="/orders/user">My Orders</Link>
-                    <Link href="/password/update">Change Password</Link>
                 </div>
             </div>
         </>

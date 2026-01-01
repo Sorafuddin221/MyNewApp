@@ -3,6 +3,7 @@ import connectMongoDatabase from '@/lib/db';
 import User from '@/models/userModels';
 import { verifyUserAuth, roleBasedAccess } from '@/middleware/auth';
 import HandleError from '@/utils/handleError';
+import cloudinary from '@/lib/cloudinary';
 
 export async function GET(req, { params }) {
     await connectMongoDatabase();

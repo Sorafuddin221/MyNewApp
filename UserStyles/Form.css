@@ -1,178 +1,299 @@
-.container {
-   
+/* Base styles for the form container */
+.form-container {
+    display: flex;
+    flex-direction: column; /* Allow content to stack */
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 304px); /* Adjust for navbar, footer, and new margin-top */
     width: 100%;
-    max-width: 600px; 
-    border-radius: 10px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    background-color: var(--background); /* Use global background variable */
     padding: 20px;
     box-sizing: border-box;
-  }
-  
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Modern, clean font stack */
+    color: var(--foreground); /* Use global foreground variable for default text */
+    margin-top: 120px; /* Add margin to push content below fixed navbar */
+}
 
-  
-  .active-tab {
-    color:  var(--primary-main);
-    font-weight: bold;
-    border-bottom: 3px solid  var(--primary-main);
-     
-  }
-  
-
-  .form-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: auto;
-    width: 90%;
-    max-width: 400px;
-    background-color: var(--background);
-    padding: 20px;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-     margin-top: 80px;
-     border: 1px solid var(--border-color);
-  }
-  
-  
-  .form {
+/* Specific styling for the form content (the "card" holding the form) */
+.form-content {
+    background-color: var(--bg-primary); /* Slightly darker than background for contrast */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); /* Enhanced shadow for depth */
     width: 100%;
-  }
-  
-  .form h2 {
+    max-width: 450px; /* Optimal width for forms */
+    border: 1px solid var(--border-color); /* Subtle border */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Form heading */
+.form h2 {
     text-align: center;
-    color: var(--primary-main);
-    margin-bottom: 20px;
-  }
-  
-  .input-group {
+    color: var(--primary-main); /* Primary brand color for headings */
+    font-size: 2.5rem; /* Prominent title */
+    font-weight: 700;
+    margin-bottom: 35px; /* More space below the title */
+    letter-spacing: -0.8px; /* Tighter letter spacing for modern feel */
+}
+
+/* Input group styling */
+.input-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
-  }
+    margin-bottom: 20px; /* Ample spacing between input fields */
+}
 
-  .input-group input {
-    padding: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px; 
-  }
-  
-  .avatar-group {
-    display: flex;                 
-    align-items: center;           
-    gap: 10px;                     
-  }
-  
-  .file-input {
-    padding: 8px;                   
-    border-radius: 5px;            
-    border: 1px solid #ccc;        
-    font-size: 14px;                
-    width: 80%;                   
-  }
-  
-  .avatar {
-    width: 50px;                    
-    height: 50px;                 
-    object-fit: cover;              
-    border-radius: 50%;             
-  }
-  .authBtn {
+.input-group label {
+    font-size: 0.95rem;
+    color: var(--text-secondary); /* Muted color for labels */
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"] {
     width: 100%;
+    padding: 14px 18px; /* Generous padding */
+    border: 1px solid var(--border-color); /* Neutral border */
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--foreground);
+    background-color: var(--background); /* Input background matching page */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-main); /* Highlight active input */
+    box-shadow: 0 0 0 3px rgba(var(--primary-main-rgb), 0.2); /* Soft glow */
+    background-color: var(--bg-secondary); /* Slight change on focus */
+}
+
+.input-group input::placeholder {
+    color: var(--text-secondary); /* Clear but subtle placeholder */
+    opacity: 0.7;
+}
+
+/* Avatar upload specific styles */
+.avatar-group {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Increased gap */
+    margin-bottom: 25px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.file-input {
+    flex-grow: 1;
+    padding: 12px 15px; /* Consistent padding */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--foreground);
+    background-color: var(--background);
+    cursor: pointer;
+    overflow: hidden; /* Hide default input text */
+    text-overflow: ellipsis; /* Handle long file names */
+    white-space: nowrap;
+}
+
+/* Style the file input button if possible (advanced styling for custom file input) */
+.file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.file-input::before {
+    content: 'Choose File';
+    display: inline-block;
     background: var(--primary-main);
-    color: var(--text-primary);
-    border: none;
-    padding: 14px;
+    color: var(--text-light);
     border-radius: 5px;
+    padding: 8px 12px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background:var(--primary-dark);
-    color:var(--text-primary);
-  }
- .form-links{
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    transition: background-color 0.2s ease;
+}
+.file-input:hover::before {
+    background-color: var(--primary-dark);
+}
+
+.avatar {
+    width: 70px; /* Larger avatar preview */
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--primary-main); /* More prominent border */
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Authentication Button */
+.authBtn {
+    width: 100%;
+    background: linear-gradient(45deg, var(--primary-main), var(--primary-dark)); /* Gradient for depth */
+    color: var(--text-light);
+    border: none;
+    padding: 16px; /* Bolder button */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.8px; /* Increased letter spacing */
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(var(--primary-main-rgb), 0.3); /* Button shadow */
+}
+
+.authBtn:hover {
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary-main)); /* Reverse gradient on hover */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 6px 20px rgba(var(--primary-main-rgb), 0.4);
+}
+
+.authBtn:disabled {
+    background: var(--border-color);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Form links (Forgot Password, Sign Up/Sign In) */
+.form-links {
     text-align: center;
-    font-size: 14px;
-    color: #555;
-    margin-top:10px;
-  }
-  
-  .form-links a {
-    color:var(--border-color);
-    margin-left: 10px;
-    
-  }
-  
-  .form-links a:hover {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 30px; /* More space below the button */
+}
+
+.form-links a {
+    color: var(--primary-main);
+    margin-left: 8px;
+    text-decoration: none;
+    font-weight: 600; /* Bolder links */
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.form-links a:hover {
+    color: var(--primary-dark);
     text-decoration: underline;
-  }
-  
-  .pointer {
+}
+
+.pointer {
     cursor: pointer;
-    color: var(--primary-main)
-  }
-  
-  .form-container{
+    color: var(--primary-main);
+}
+
+/* Other containers (adjust if they use these styles, for consistency) */
+.update-container, .forgot-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh; 
-    min-height: 100vh;
+    min-height: 70vh;
     width: 100%;
-  }
-  .update-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60vh; 
-    width: 100%;
-    margin-top:70px;
-  }
-  .forgot-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 60vh; 
-    width: 100%;
-    margin-top:30px;
-  }
-  .email-group{
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 120px; /* Add margin to push content below fixed navbar */
+}
+
+.email-group {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100px;
-  }
+}
 
-  @media (max-width: 768px) {
-    .container {
-      padding: 15px;
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .form-content {
+        padding: 30px 25px;
+        max-width: 95%;
     }
-    
-  
-    button {
-      font-size: 14px;
-      padding: 10px;
+
+    .form h2 {
+        font-size: 2rem;
+        margin-bottom: 25px;
     }
-  
-    .input-group input {
-      padding: 12px;
-      font-size: 14px;
+
+    .input-group {
+        margin-bottom: 15px;
     }
-  
-    .tab {
-      font-size: 14px;
+
+    .input-group input, .file-input {
+        padding: 12px 14px;
+        font-size: 0.95rem;
     }
-    .update-container{
-      margin-top:60px;
+
+    .authBtn {
+        padding: 14px;
+        font-size: 1rem;
     }
-  }
-  
- @media (max-width: 390px) {
-  .form-content{
-    margin-top: 75px;
-  }
- }
-  
+
+    .avatar-group {
+        gap: 15px;
+    }
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .form-links {
+        font-size: 0.85rem;
+        margin-top: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-content {
+        padding: 25px 20px;
+        max-width: 100%;
+    }
+
+    .form h2 {
+        font-size: 1.7rem;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 12px;
+    }
+
+    .input-group input, .file-input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .authBtn {
+        padding: 12px;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+
+    .avatar-group {
+        flex-direction: column; /* Stack avatar and file input */
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .file-input {
+        width: 100%;
+    }
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+        margin-left: 0;
+    }
+
+    .form-links {
+        font-size: 0.8rem;
+        margin-top: 20px;
+    }
+}
+

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation'; // Import usePathname
 import { useSelector, useDispatch } from 'react-redux';
 import { loadUser } from '@/features/user/userSlice';
 import Navbar from './Navbar';
@@ -9,6 +10,10 @@ import Footer from './Footer';
 export default function LayoutClient({ children, settings }) {
   const { isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const pathname = usePathname(); // Get the current pathname
+
+  // Determine if the current page is a login or register page
+  const isAuthPage = pathname === '/login' || pathname === '/register';
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !isAuthenticated) {
@@ -46,7 +51,7 @@ export default function LayoutClient({ children, settings }) {
 
   return (
     <>
-      <Navbar siteLogoUrl={settings?.siteLogoUrl} textIcon={settings?.textIcon} />
+      <Navbar siteLogoUrl={settings?.siteLogoUrl} textIcon={settings?.textIcon} isAuthPage={isAuthPage} />
       {children}
       <Footer />
     </>

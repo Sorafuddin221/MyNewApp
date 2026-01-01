@@ -18,7 +18,7 @@ import UserDashboard from './UserDashboard';
 import Loader from './Loader';
 
 
-function Navbar({ siteLogoUrl, textIcon }) {
+function Navbar({ siteLogoUrl, textIcon, isAuthPage }) {
     const [isMenuOpen,setisMenuOpen]=useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery,setSearchQuery]=useState("");
@@ -37,9 +37,14 @@ function Navbar({ siteLogoUrl, textIcon }) {
     };
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [prevScrollPos, topHeaderVisible, handleScroll]);
+        if (isAuthPage) {
+            setTopHeaderVisible(true); // Always visible on auth pages
+            // No scroll listener on auth pages
+        } else {
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        }
+    }, [prevScrollPos, topHeaderVisible, handleScroll, isAuthPage]);
 
 
     useEffect(() => {

@@ -1,19 +1,18 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+'use client'
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const Portal = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
 
-  return mounted
-    ? createPortal(children, document.querySelector("#portal-root"))
-    : null;
+    return mounted
+        ? createPortal(children, document.querySelector("#portal-root"))
+        : null;
 };
 
 export default Portal;

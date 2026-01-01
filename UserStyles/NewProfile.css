@@ -1,0 +1,137 @@
+/* General Profile Container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding: 2rem;
+    background-color: #f4f7f6; /* A soft, light grey background */
+    margin-top: 120px; /* Add margin to push content below fixed navbar */
+}
+
+/* Profile Card */
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Profile Header */
+.profile-page-header {
+    display: flex;
+    padding: 2.5rem;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+/* Avatar Section */
+.profile-avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-page-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.profile-page-avatar:hover {
+    transform: scale(1.05);
+}
+
+.edit-profile-btn {
+    background-color: #3498db; /* A modern blue */
+    color: #ffffff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-btn:hover {
+    background-color: #2980b9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* User Info Section */
+.profile-info {
+    flex-grow: 1;
+}
+
+.profile-page-user-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50; /* A dark, professional color */
+    margin: 0 0 0.5rem;
+}
+
+.profile-email {
+    font-size: 1.2rem;
+    color: #7f8c8d; /* A muted grey */
+    margin: 0 0 1rem;
+}
+
+.profile-joined {
+    font-size: 1rem;
+    color: #95a5a6; /* A lighter grey */
+}
+
+/* Action Buttons Section */
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2.5rem;
+    background-color: #f8f9fa; /* A slightly off-white background */
+    border-top: 1px solid #e9ecef;
+}
+
+.action-btn {
+    background-color: transparent;
+    color: #34495e; /* A dark slate blue */
+    padding: 0.8rem 1.5rem;
+    border: 2px solid #bdc3c7; /* Light grey border */
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: #34495e;
+    color: #ffffff;
+    border-color: #34495e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-page-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.5rem;
+    }
+
+    .action-btn {
+        text-align: center;
+    }
+}

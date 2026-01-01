@@ -1,6 +1,7 @@
 .special-offer-section {
     width: 100%;
     height: 100%;
+    min-height: 0; /* Allow flex item to shrink */
     background-color: transparent; /* Changed to transparent */
     display: flex;
     flex-direction: column; /* Keep as column to center main content if needed */
@@ -62,6 +63,7 @@
     position: relative; /* Essential for containing absolute image and overlay */
     width: 100%; /* Take full width of parent */
     height: 100%; /* Take full height of parent */
+    min-height: 0; /* Allow flex item to shrink */
     border-radius: 10px;
     overflow: hidden;
     color: white; /* Text color over image */
@@ -155,22 +157,32 @@
     }
 
     .special-offer-section h3 {
-        font-size: 1.8rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.6rem; /* Slightly smaller for tablets */
+        margin-bottom: 0.4rem;
     }
     
     .offer-button {
-        padding: 0.8rem 1.2rem;
-        font-size: 0.9rem;
+        padding: 0.7rem 1.1rem;
+        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 480px) {
     .special-offer-section h3 {
-        font-size: 1.5rem;
+        font-size: 1.3rem; /* Even smaller for mobile */
     }
     .offer-button {
-        padding: 0.6rem 1rem;
-        font-size: 0.8rem;
+        padding: 0.5rem 0.9rem;
+        font-size: 0.75rem;
     }
+}
+
+@media (max-width: 320px) {
+  .special-offer-section h3 {
+    font-size: 1.1rem; /* Adjust for very small screens */
+  }
+  .offer-button {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.7rem;
+  }
 }

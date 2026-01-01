@@ -29,7 +29,7 @@ function RegisterPage() {
             reader.onload = () => {
                 if (reader.readyState === 2) {
                     setAvatarPreview(reader.result);
-                    setAvatar(reader.result);
+                    setAvatar(e.target.files[0]);
                 }
             };
             reader.readAsDataURL(e.target.files[0]);
