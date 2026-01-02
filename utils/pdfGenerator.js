@@ -7,17 +7,54 @@ async function generatePdf(htmlContent) {
         let puppeteer;
         let launchOptions = {};
 
-        // Check if we are in a production (serverless) environment
         if (process.env.NODE_ENV === 'production') {
             puppeteer = require('puppeteer-core');
             const chromium = require('@sparticuz/chromium');
             
+            // A more robust set of arguments for serverless environments
+            const minimal_args = [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--single-process',
+                '--no-zygote',
+                '--disable-gpu',
+                '--hide-scrollbars',
+                '--disable-web-security',
+                '--autoplay-policy=user-gesture-required',
+                '--disable-background-networking',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-breakpad',
+                '--disable-client-side-phishing-detection',
+                '--disable-component-update',
+                '--disable-default-apps',
+                '--disable-domain-reliability',
+                '--disable-extensions',
+                '--disable-features=AudioServiceOutOfProcess',
+                '--disable-hang-monitor',
+                '--disable-ipc-flooding-protection',
+                '--disable-notifications',
+                '--disable-offer-store-unmasked-wallet-cards',
+                '--disable-popup-blocking',
+                '--disable-print-preview',
+                '--disable-prompt-on-repost',
+                '--disable-renderer-backgrounding',
+                '--disable-speech-api',
+                '--disable-sync'
+            ];
+            
+            console.log("Attempting to get Chromium executable path...");
+            const executablePath = await chromium.executablePath();
+            console.log("Chromium executable path:", executablePath);
+
             launchOptions = {
-                args: chromium.args,
-                executablePath: await chromium.executablePath(),
+                args: minimal_args,
+                executablePath: executablePath,
                 headless: chromium.headless,
                 ignoreHTTPSErrors: true,
             };
+
         } else {
             // Use the full puppeteer package for local development
             puppeteer = require('puppeteer');
@@ -26,7 +63,9 @@ async function generatePdf(htmlContent) {
             };
         }
 
+        console.log("Launching browser...");
         browser = await puppeteer.launch(launchOptions);
+        console.log("Browser launched successfully.");
 
         const page = await browser.newPage();
         
