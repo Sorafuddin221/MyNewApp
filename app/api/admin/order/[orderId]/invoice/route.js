@@ -6,7 +6,7 @@ import { generateInvoicePdf } from '@/utils/pdfGenerator';
 
 export async function GET(request, { params }) {
     await dbConnect();
-    const { orderId } = params;
+    const { orderId } = await params;
 
     try {
         const order = await Order.findById(orderId).populate('orderItems.product').populate('user');
@@ -14,6 +14,12 @@ export async function GET(request, { params }) {
 
         if (!order) {
             return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+        }
+        if (!settings) {
+            return NextResponse.json({ message: 'Settings not found' }, { status: 404 });
+        }
+        if (!order.user) {
+            return NextResponse.json({ message: 'User not found for this order' }, { status: 404 });
         }
 
         const pdfBuffer = await generateInvoicePdf(order, settings);

@@ -45,7 +45,7 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
 
     const handleGeneratePackingSlip = async () => {
         try {
-            const response = await fetch(`/api/admin/order/packing-slip/${orderId}`);
+            const response = await fetch(`/api/admin/order/${orderId}/packing-slip`);
             const contentType = response.headers.get("content-type");
             console.log(`Packing Slip API Response Status: ${response.status}`);
             console.log(`Packing Slip API Content-Type: ${contentType}`);
@@ -81,7 +81,7 @@ import { getAdminOrderDetails, removeErrors, removeSuccess, updateOrderStatus } 
 
     const handleGenerateInvoice = async () => {
         try {
-            const response = await fetch(`/api/admin/order/invoice/${orderId}`);
+            const response = await fetch(`/api/admin/order/${orderId}/invoice`);
             const contentType = response.headers.get("content-type");
             console.log(`Invoice API Response Status: ${response.status}`);
             console.log(`Invoice API Content-Type: ${contentType}`);

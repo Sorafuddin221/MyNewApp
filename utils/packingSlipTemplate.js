@@ -99,7 +99,7 @@ export const getPackingSlipHTML = (order, settings) => {
             <div class="header">
                 <div class="company-details">
                     <img src="${settings.siteLogoUrl}" alt="My Awesome Shop Logo" style="max-height: 80px; margin-bottom: 10px;">
-                    <p>My Awesome Shop</p>
+                    <p>${settings.siteTitle}</p>
                     <p>123 Main St, Anytown, USA 12345</p>
                 </div>
                 <h1>Packing Slip</h1>
