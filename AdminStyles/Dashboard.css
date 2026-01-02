@@ -228,3 +228,13 @@
       grid-template-columns: 1fr;
     }
   }
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1rem;
+}

@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import '@/AdminStyles/Dashboard.css';
 import PageTitle from '@/components/PageTitle';
+import NotificationBell from '@/components/Admin/NotificationBell'; // Import the new component
 
 import {
     AttachMoney,
@@ -134,6 +135,10 @@ function DashboardPage() {
                     </nav>
                 </div>
                 <div className="main-content">
+                    <div className="dashboard-header">
+                        <h2>Dashboard Overview</h2>
+                        <NotificationBell />
+                    </div>
                     <div className="stats-grid">
                         <div className="stat-box">
                             <Inventory className='icon' />
