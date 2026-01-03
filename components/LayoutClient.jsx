@@ -16,10 +16,10 @@ export default function LayoutClient({ children, settings }) {
   const isAuthPage = pathname === '/login' || pathname === '/register';
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !isAuthenticated) {
+    if (typeof window !== 'undefined' && !isAuthenticated && !isAuthPage) {
       dispatch(loadUser());
     }
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, isAuthenticated, isAuthPage]);
 
   useEffect(() => {
     if (settings?.siteFaviconUrl) {

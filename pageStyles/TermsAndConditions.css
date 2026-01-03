@@ -33,3 +33,55 @@
 .terms-and-conditions-container strong {
     font-weight: bold;
 }
+
+/* New styles for the Return & Exchange Policy section */
+.policy-section {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+}
+
+.policy-section h3 {
+    color: #111;
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.3rem;
+}
+
+.policy-section ul {
+    margin-left: 1.5rem;
+}
+
+.policy-section ul ul {
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    border-left: 2px solid #eee;
+    padding-left: 1.5rem;
+}
+
+.policy-section .highlight {
+    background-color: #fffbdd;
+    padding: 1rem;
+    border-left: 4px solid #ffc107;
+    margin: 1.5rem 0;
+}
+
+.policy-section .cta-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.policy-section .cta-button:hover {
+    background-color: #0056b3;
+    color: #fff;
+}

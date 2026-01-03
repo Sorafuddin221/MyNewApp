@@ -17,7 +17,7 @@ async function getSettings() {
   } catch (error) {
     console.error('Error fetching settings:', error);
     return {
-      siteTitle: "My E-Shop",
+      siteTitle: "YaMart Bd",
       siteLogoUrl: "",
       siteFaviconUrl: "",
       textIcon: "",

@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
         <>
             <PageTitle title="Privacy Policy" />
             <div className="privacy-policy-container">
-                <h1>Privacy Policy for My E-Shop</h1>
+                <h1>Privacy Policy fo YaMart BD</h1>
                 <p><strong>Last Updated: December 6, 2025</strong></p>
 
                 <p>
@@ -67,10 +67,10 @@ const PrivacyPolicy = () => {
                 <h2>8. Contact Us</h2>
                 <p>If you have questions or comments about this Privacy Policy, please contact us at:</p>
                 <p>
-                    My E-Shop<br />
-                    [Your Company Address]<br />
-                    [Your Company Email]<br />
-                    [Your Company Phone Number]
+                    YaMart BD<br />
+                    [Raninager,Naogaon,Rajshahi,Bangladesh ]<br />
+                    [yamart.bd@gmail.com]<br />
+                    [Phone: 01767250009]
                 </p>
             </div>
         </>

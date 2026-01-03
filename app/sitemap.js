@@ -2,7 +2,7 @@
 import ProductModel from '../models/productModel';
 import connectMongoDatabase from '../lib/db';
 
-const URL = 'https://your-domain.com';
+const URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
 export default async function sitemap() {
   await connectMongoDatabase();
